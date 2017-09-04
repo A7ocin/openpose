@@ -161,13 +161,9 @@ SwigPyIterator_swigregister(SwigPyIterator)
 
 SHARED_PTR_DISOWN = _OpenPosePython.SHARED_PTR_DISOWN
 
-def test():
-    return _OpenPosePython.test()
-test = _OpenPosePython.test
-
-def openPoseTutorialWrapper1(datumToProcess):
-    return _OpenPosePython.openPoseTutorialWrapper1(datumToProcess)
-openPoseTutorialWrapper1 = _OpenPosePython.openPoseTutorialWrapper1
+def openPosePython(datumToProcess):
+    return _OpenPosePython.openPosePython(datumToProcess)
+openPosePython = _OpenPosePython.openPosePython
 
 def new_datumsPtr():
     return _OpenPosePython.new_datumsPtr()

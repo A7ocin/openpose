@@ -34,9 +34,7 @@
 //	void display(const std::shared_ptr<std::vector<op::Datum>>& datumsPtr);
 //};
 
-void test();
-
-bool openPoseTutorialWrapper1(std::shared_ptr<std::vector<op::Datum>> datumToProcess);
+bool openPosePython(std::shared_ptr<std::vector<op::Datum>> datumToProcess);
 
 std::shared_ptr<std::vector<op::Datum>> new_datumsPtr();
 

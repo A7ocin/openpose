@@ -3663,8 +3663,7 @@ SWIGINTERNINLINE PyObject*
 using namespace std;
 using namespace op;
 
-extern void test();
-extern bool openPoseTutorialWrapper1(std::shared_ptr<std::vector<op::Datum>> datumToProcess);
+extern bool openPosePython(std::shared_ptr<std::vector<op::Datum>> datumToProcess);
 extern std::shared_ptr<std::vector<op::Datum>> new_datumsPtr();
 extern int get(std::shared_ptr<std::vector<op::Datum>> dptr);
 extern op::Datum datumsPtr_at(std::shared_ptr<std::vector<op::Datum>> dptr);
@@ -4901,19 +4900,7 @@ SWIGINTERN PyObject *SwigPyIterator_swigregister(PyObject *SWIGUNUSEDPARM(self),
   return SWIG_Py_Void();
 }
 
-SWIGINTERN PyObject *_wrap_test(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  
-  if (!PyArg_ParseTuple(args,(char *)":test")) SWIG_fail;
-  test();
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_openPoseTutorialWrapper1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_openPosePython(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > > arg1 ;
   void *argp1 ;
@@ -4921,17 +4908,17 @@ SWIGINTERN PyObject *_wrap_openPoseTutorialWrapper1(PyObject *SWIGUNUSEDPARM(sel
   PyObject * obj0 = 0 ;
   bool result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:openPoseTutorialWrapper1",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:openPosePython",&obj0)) SWIG_fail;
   {
     int newmem = 0;
     res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_std__vectorT_op__Datum_std__allocatorT_op__Datum_t_t_t,  0 , &newmem);
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "openPoseTutorialWrapper1" "', argument " "1"" of type '" "std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > >""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "openPosePython" "', argument " "1"" of type '" "std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > >""'"); 
     }
     if (argp1) arg1 = *(reinterpret_cast< std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > > * >(argp1));
     if (newmem & SWIG_CAST_NEW_MEMORY) delete reinterpret_cast< std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > > * >(argp1);
   }
-  result = (bool)openPoseTutorialWrapper1(arg1);
+  result = (bool)openPosePython(arg1);
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
@@ -7445,8 +7432,7 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"SwigPyIterator___add__", _wrap_SwigPyIterator___add__, METH_VARARGS, NULL},
 	 { (char *)"SwigPyIterator___sub__", _wrap_SwigPyIterator___sub__, METH_VARARGS, NULL},
 	 { (char *)"SwigPyIterator_swigregister", SwigPyIterator_swigregister, METH_VARARGS, NULL},
-	 { (char *)"test", _wrap_test, METH_VARARGS, NULL},
-	 { (char *)"openPoseTutorialWrapper1", _wrap_openPoseTutorialWrapper1, METH_VARARGS, NULL},
+	 { (char *)"openPosePython", _wrap_openPosePython, METH_VARARGS, NULL},
 	 { (char *)"new_datumsPtr", _wrap_new_datumsPtr, METH_VARARGS, NULL},
 	 { (char *)"get", _wrap_get, METH_VARARGS, NULL},
 	 { (char *)"datumsPtr_at", _wrap_datumsPtr_at, METH_VARARGS, NULL},

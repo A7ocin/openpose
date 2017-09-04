@@ -9,15 +9,10 @@ using namespace op;
 // Producer
 DEFINE_string(image_dir, "examples/media/", "Process a directory of images. Read all standard formats (jpg, png, bmp, etc.).");
 
-void test() {
-	cout << "Working" << endl;
-}
-
-bool openPoseTutorialWrapper1(std::shared_ptr<std::vector<op::Datum>> datumToProcess)
+bool openPosePython(std::shared_ptr<std::vector<op::Datum>> datumToProcess)
 {
-	int value = 0;
-	op::log("Starting pose estimation demo.", op::Priority::High);
-	const auto timerBegin = std::chrono::high_resolution_clock::now();
+	bool value = false;
+
 	// Configure OpenPose
 	op::Wrapper<std::vector<op::Datum>> opWrapper{ op::ThreadManagerMode::Asynchronous };
 	// Pose configuration (use WrapperStructPose{} for default and recommended configuration)
@@ -26,7 +21,6 @@ bool openPoseTutorialWrapper1(std::shared_ptr<std::vector<op::Datum>> datumToPro
 	// Configure wrapper
 	opWrapper.configure(wrapperStructPose);
 
-	op::log("Starting thread(s)", op::Priority::High);
 	opWrapper.start();
 
 	//while (!userInputClass.isFinished())
@@ -45,20 +39,13 @@ bool openPoseTutorialWrapper1(std::shared_ptr<std::vector<op::Datum>> datumToPro
 				value = true;
 			}
 			else {
-				op::log("Processed datum could not be emplaced.", op::Priority::High, __LINE__, __FUNCTION__, __FILE__);
+				//op::log("Processed datum could not be emplaced.", op::Priority::High, __LINE__, __FUNCTION__, __FILE__);
 				value = false;
 			}
 		}
 	//}
 
-	op::log("Stopping thread(s)", op::Priority::High);
 	opWrapper.stop();
-
-	// Measuring total time
-	const auto now = std::chrono::high_resolution_clock::now();
-	const auto totalTimeSec = (double)std::chrono::duration_cast<std::chrono::nanoseconds>(now - timerBegin).count() * 1e-9;
-	const auto message = "Real-time pose estimation demo successfully finished. Total time: " + std::to_string(totalTimeSec) + " seconds.";
-	op::log(message, op::Priority::High);
 
 	return value;
 }

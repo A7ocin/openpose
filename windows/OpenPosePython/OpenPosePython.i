@@ -27,8 +27,7 @@
 using namespace std;
 using namespace op;
 
-extern void test();
-extern bool openPoseTutorialWrapper1(std::shared_ptr<std::vector<op::Datum>> datumToProcess);
+extern bool openPosePython(std::shared_ptr<std::vector<op::Datum>> datumToProcess);
 extern std::shared_ptr<std::vector<op::Datum>> new_datumsPtr();
 extern int get(std::shared_ptr<std::vector<op::Datum>> dptr);
 extern op::Datum datumsPtr_at(std::shared_ptr<std::vector<op::Datum>> dptr);
@@ -62,8 +61,7 @@ namespacec std{
 
 %array_class(cv::Mat, Mat);
 
-extern void test();
-extern bool openPoseTutorialWrapper1(std::shared_ptr<std::vector<op::Datum>> datumToProcess);
+extern bool openPosePython(std::shared_ptr<std::vector<op::Datum>> datumToProcess);
 extern std::shared_ptr<std::vector<op::Datum>> new_datumsPtr();
 extern int get(std::shared_ptr<std::vector<op::Datum>> dptr);
 extern op::Datum datumsPtr_at(std::shared_ptr<std::vector<op::Datum>> dptr);
