@@ -1,0 +1,5 @@
+swig -c++ -python -I..\..\include python_wrapper.i
+
+python setup.py build_ext --inplace
+
+python openpose-python.py

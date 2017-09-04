@@ -95,7 +95,7 @@ DEFINE_bool(heatmaps_add_bkg,           false,          "Same functionality as `
                                                         " background.");
 DEFINE_bool(heatmaps_add_PAFs,          false,          "Same functionality as `add_heatmaps_parts`, but adding the PAFs.");
 // OpenPose Face
-DEFINE_bool(face,                       false,          "Enables face keypoint detection. It will share some parameters from the body pose, e.g."
+DEFINE_bool(face,                       true,          "Enables face keypoint detection. It will share some parameters from the body pose, e.g."
                                                         " `model_folder`. Note that this will considerable slow down the performance and increse"
                                                         " the required GPU memory. In addition, the greater number of people on the image, the"
                                                         " slower OpenPose will be.");
