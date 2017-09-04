@@ -209,10 +209,6 @@ def matToNumpyString(dptr):
     return _OpenPosePython.matToNumpyString(dptr)
 matToNumpyString = _OpenPosePython.matToNumpyString
 
-def getElement(w, h, c, dptr):
-    return _OpenPosePython.getElement(w, h, c, dptr)
-getElement = _OpenPosePython.getElement
-
 def show(name, dptr):
     return _OpenPosePython.show(name, dptr)
 show = _OpenPosePython.show
@@ -220,6 +216,109 @@ show = _OpenPosePython.show
 def matToArray(mat):
     return _OpenPosePython.matToArray(mat)
 matToArray = _OpenPosePython.matToArray
+class Datum(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Datum, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Datum, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["id"] = _OpenPosePython.Datum_id_set
+    __swig_getmethods__["id"] = _OpenPosePython.Datum_id_get
+    if _newclass:
+        id = _swig_property(_OpenPosePython.Datum_id_get, _OpenPosePython.Datum_id_set)
+    __swig_setmethods__["name"] = _OpenPosePython.Datum_name_set
+    __swig_getmethods__["name"] = _OpenPosePython.Datum_name_get
+    if _newclass:
+        name = _swig_property(_OpenPosePython.Datum_name_get, _OpenPosePython.Datum_name_set)
+    __swig_setmethods__["cvInputData"] = _OpenPosePython.Datum_cvInputData_set
+    __swig_getmethods__["cvInputData"] = _OpenPosePython.Datum_cvInputData_get
+    if _newclass:
+        cvInputData = _swig_property(_OpenPosePython.Datum_cvInputData_get, _OpenPosePython.Datum_cvInputData_set)
+    __swig_setmethods__["inputNetData"] = _OpenPosePython.Datum_inputNetData_set
+    __swig_getmethods__["inputNetData"] = _OpenPosePython.Datum_inputNetData_get
+    if _newclass:
+        inputNetData = _swig_property(_OpenPosePython.Datum_inputNetData_get, _OpenPosePython.Datum_inputNetData_set)
+    __swig_setmethods__["outputData"] = _OpenPosePython.Datum_outputData_set
+    __swig_getmethods__["outputData"] = _OpenPosePython.Datum_outputData_get
+    if _newclass:
+        outputData = _swig_property(_OpenPosePython.Datum_outputData_get, _OpenPosePython.Datum_outputData_set)
+    __swig_setmethods__["cvOutputData"] = _OpenPosePython.Datum_cvOutputData_set
+    __swig_getmethods__["cvOutputData"] = _OpenPosePython.Datum_cvOutputData_get
+    if _newclass:
+        cvOutputData = _swig_property(_OpenPosePython.Datum_cvOutputData_get, _OpenPosePython.Datum_cvOutputData_set)
+    __swig_setmethods__["poseKeypoints"] = _OpenPosePython.Datum_poseKeypoints_set
+    __swig_getmethods__["poseKeypoints"] = _OpenPosePython.Datum_poseKeypoints_get
+    if _newclass:
+        poseKeypoints = _swig_property(_OpenPosePython.Datum_poseKeypoints_get, _OpenPosePython.Datum_poseKeypoints_set)
+    __swig_setmethods__["poseHeatMaps"] = _OpenPosePython.Datum_poseHeatMaps_set
+    __swig_getmethods__["poseHeatMaps"] = _OpenPosePython.Datum_poseHeatMaps_get
+    if _newclass:
+        poseHeatMaps = _swig_property(_OpenPosePython.Datum_poseHeatMaps_get, _OpenPosePython.Datum_poseHeatMaps_set)
+    __swig_setmethods__["faceRectangles"] = _OpenPosePython.Datum_faceRectangles_set
+    __swig_getmethods__["faceRectangles"] = _OpenPosePython.Datum_faceRectangles_get
+    if _newclass:
+        faceRectangles = _swig_property(_OpenPosePython.Datum_faceRectangles_get, _OpenPosePython.Datum_faceRectangles_set)
+    __swig_setmethods__["faceKeypoints"] = _OpenPosePython.Datum_faceKeypoints_set
+    __swig_getmethods__["faceKeypoints"] = _OpenPosePython.Datum_faceKeypoints_get
+    if _newclass:
+        faceKeypoints = _swig_property(_OpenPosePython.Datum_faceKeypoints_get, _OpenPosePython.Datum_faceKeypoints_set)
+    __swig_setmethods__["handRectangles"] = _OpenPosePython.Datum_handRectangles_set
+    __swig_getmethods__["handRectangles"] = _OpenPosePython.Datum_handRectangles_get
+    if _newclass:
+        handRectangles = _swig_property(_OpenPosePython.Datum_handRectangles_get, _OpenPosePython.Datum_handRectangles_set)
+    __swig_setmethods__["handKeypoints"] = _OpenPosePython.Datum_handKeypoints_set
+    __swig_getmethods__["handKeypoints"] = _OpenPosePython.Datum_handKeypoints_get
+    if _newclass:
+        handKeypoints = _swig_property(_OpenPosePython.Datum_handKeypoints_get, _OpenPosePython.Datum_handKeypoints_set)
+    __swig_setmethods__["scaleInputToOutput"] = _OpenPosePython.Datum_scaleInputToOutput_set
+    __swig_getmethods__["scaleInputToOutput"] = _OpenPosePython.Datum_scaleInputToOutput_get
+    if _newclass:
+        scaleInputToOutput = _swig_property(_OpenPosePython.Datum_scaleInputToOutput_get, _OpenPosePython.Datum_scaleInputToOutput_set)
+    __swig_setmethods__["scaleNetToOutput"] = _OpenPosePython.Datum_scaleNetToOutput_set
+    __swig_getmethods__["scaleNetToOutput"] = _OpenPosePython.Datum_scaleNetToOutput_get
+    if _newclass:
+        scaleNetToOutput = _swig_property(_OpenPosePython.Datum_scaleNetToOutput_get, _OpenPosePython.Datum_scaleNetToOutput_set)
+    __swig_setmethods__["scaleRatios"] = _OpenPosePython.Datum_scaleRatios_set
+    __swig_getmethods__["scaleRatios"] = _OpenPosePython.Datum_scaleRatios_get
+    if _newclass:
+        scaleRatios = _swig_property(_OpenPosePython.Datum_scaleRatios_get, _OpenPosePython.Datum_scaleRatios_set)
+    __swig_setmethods__["elementRendered"] = _OpenPosePython.Datum_elementRendered_set
+    __swig_getmethods__["elementRendered"] = _OpenPosePython.Datum_elementRendered_get
+    if _newclass:
+        elementRendered = _swig_property(_OpenPosePython.Datum_elementRendered_get, _OpenPosePython.Datum_elementRendered_set)
+
+    def __init__(self, *args):
+        this = _OpenPosePython.new_Datum(*args)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+    __swig_destroy__ = _OpenPosePython.delete_Datum
+    __del__ = lambda self: None
+
+    def clone(self):
+        return _OpenPosePython.Datum_clone(self)
+
+    def __lt__(self, datum):
+        return _OpenPosePython.Datum___lt__(self, datum)
+
+    def __gt__(self, datum):
+        return _OpenPosePython.Datum___gt__(self, datum)
+
+    def __le__(self, datum):
+        return _OpenPosePython.Datum___le__(self, datum)
+
+    def __ge__(self, datum):
+        return _OpenPosePython.Datum___ge__(self, datum)
+
+    def __eq__(self, datum):
+        return _OpenPosePython.Datum___eq__(self, datum)
+
+    def __ne__(self, datum):
+        return _OpenPosePython.Datum___ne__(self, datum)
+Datum_swigregister = _OpenPosePython.Datum_swigregister
+Datum_swigregister(Datum)
+
 class datum(_object):
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, datum, name, value)

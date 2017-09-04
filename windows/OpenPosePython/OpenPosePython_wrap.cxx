@@ -3006,22 +3006,27 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
-#define SWIGTYPE_p_Mat swig_types[0]
-#define SWIGTYPE_p_char swig_types[1]
-#define SWIGTYPE_p_cv__Mat swig_types[2]
-#define SWIGTYPE_p_datum swig_types[3]
-#define SWIGTYPE_p_float swig_types[4]
-#define SWIGTYPE_p_mat swig_types[5]
-#define SWIGTYPE_p_op__Datum swig_types[6]
-#define SWIGTYPE_p_std__invalid_argument swig_types[7]
-#define SWIGTYPE_p_std__shared_ptrT_std__vectorT_op__Datum_std__allocatorT_op__Datum_t_t_t swig_types[8]
-#define SWIGTYPE_p_std__vectorT_float_std__allocatorT_float_t_t swig_types[9]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_float_std__allocatorT_float_t_t_std__allocatorT_std__vectorT_float_std__allocatorT_float_t_t_t_t swig_types[10]
-#define SWIGTYPE_p_std__vectorT_uchar_std__allocatorT_uchar_t_t swig_types[11]
-#define SWIGTYPE_p_swig__SwigPyIterator swig_types[12]
-#define SWIGTYPE_p_ucharMat swig_types[13]
-static swig_type_info *swig_types[15];
-static swig_module_info swig_module = {swig_types, 14, 0, 0, 0, 0};
+#define SWIGTYPE_p_ArrayT_float_t swig_types[0]
+#define SWIGTYPE_p_Mat swig_types[1]
+#define SWIGTYPE_p_char swig_types[2]
+#define SWIGTYPE_p_cv__Mat swig_types[3]
+#define SWIGTYPE_p_datum swig_types[4]
+#define SWIGTYPE_p_float swig_types[5]
+#define SWIGTYPE_p_mat swig_types[6]
+#define SWIGTYPE_p_op__Datum swig_types[7]
+#define SWIGTYPE_p_std__arrayT_ArrayT_float_t_2_t swig_types[8]
+#define SWIGTYPE_p_std__invalid_argument swig_types[9]
+#define SWIGTYPE_p_std__pairT_int_std__string_t swig_types[10]
+#define SWIGTYPE_p_std__shared_ptrT_std__vectorT_op__Datum_std__allocatorT_op__Datum_t_t_t swig_types[11]
+#define SWIGTYPE_p_std__vectorT_RectangleT_float_t_std__allocatorT_RectangleT_float_t_t_t swig_types[12]
+#define SWIGTYPE_p_std__vectorT_float_std__allocatorT_float_t_t swig_types[13]
+#define SWIGTYPE_p_std__vectorT_std__arrayT_RectangleT_float_t_2_t_std__allocatorT_std__arrayT_RectangleT_float_t_2_t_t_t swig_types[14]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_float_std__allocatorT_float_t_t_std__allocatorT_std__vectorT_float_std__allocatorT_float_t_t_t_t swig_types[15]
+#define SWIGTYPE_p_std__vectorT_uchar_std__allocatorT_uchar_t_t swig_types[16]
+#define SWIGTYPE_p_swig__SwigPyIterator swig_types[17]
+#define SWIGTYPE_p_ucharMat swig_types[18]
+static swig_type_info *swig_types[20];
+static swig_module_info swig_module = {swig_types, 19, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -3653,7 +3658,7 @@ SWIGINTERNINLINE PyObject*
 
 #include "OpenPosePython.h"
 #include "..\..\include\openpose\headers.hpp"
-//#include "..\..\include\openpose\core\datum.hpp"
+#include "..\..\include\openpose\core\datum.hpp"
 #include "..\..\3rdparty\windows\opencv\include\opencv2\core\mat.hpp"
 using namespace std;
 using namespace op;
@@ -3670,7 +3675,6 @@ extern void emplaceBack(std::shared_ptr<std::vector<op::Datum>> dptr);
 extern void setCvInputData(std::shared_ptr<std::vector<op::Datum>> dptr, std::string image);
 extern void setInput(std::shared_ptr<std::vector<op::Datum>> dptr, std::vector<std::vector<float>> image);
 extern std::string matToNumpyString(std::shared_ptr<std::vector<op::Datum>> dptr);
-extern int getElement(int w, int h, int c, std::shared_ptr<std::vector<op::Datum>> dptr);
 extern void show(std::string name, std::shared_ptr<std::vector<op::Datum>> dptr);
 extern std::vector<float> matToArray(cv::Mat mat);
 
@@ -3868,19 +3872,77 @@ SWIG_From_std_string  (const std::string& s)
 }
 
 
-SWIGINTERN int
-SWIG_AsVal_int (PyObject * obj, int *val)
+#ifdef SWIG_LONG_LONG_AVAILABLE
+SWIGINTERNINLINE PyObject* 
+SWIG_From_unsigned_SS_long_SS_long  (unsigned long long value)
 {
-  long v;
-  int res = SWIG_AsVal_long (obj, &v);
+  return (value > LONG_MAX) ?
+    PyLong_FromUnsignedLongLong(value) : PyInt_FromLong(static_cast< long >(value));
+}
+#endif
+
+
+/* Getting isfinite working pre C99 across multiple platforms is non-trivial. Users can provide SWIG_isfinite on older platforms. */
+#ifndef SWIG_isfinite
+/* isfinite() is a macro for C99 */
+# if defined(isfinite)
+#  define SWIG_isfinite(X) (isfinite(X))
+# elif defined __cplusplus && __cplusplus >= 201103L
+/* Use a template so that this works whether isfinite() is std::isfinite() or
+ * in the global namespace.  The reality seems to vary between compiler
+ * versions.
+ *
+ * Make sure namespace std exists to avoid compiler warnings.
+ *
+ * extern "C++" is required as this fragment can end up inside an extern "C" { } block
+ */
+namespace std { }
+extern "C++" template<typename T>
+inline int SWIG_isfinite_func(T x) {
+  using namespace std;
+  return isfinite(x);
+}
+#  define SWIG_isfinite(X) (SWIG_isfinite_func(X))
+# elif defined(_MSC_VER)
+#  define SWIG_isfinite(X) (_finite(X))
+# elif defined(__sun) && defined(__SVR4)
+#  include <ieeefp.h>
+#  define SWIG_isfinite(X) (finite(X))
+# endif
+#endif
+
+
+/* Accept infinite as a valid float value unless we are unable to check if a value is finite */
+#ifdef SWIG_isfinite
+# define SWIG_Float_Overflow_Check(X) ((X < -FLT_MAX || X > FLT_MAX) && SWIG_isfinite(X))
+#else
+# define SWIG_Float_Overflow_Check(X) ((X < -FLT_MAX || X > FLT_MAX))
+#endif
+
+
+SWIGINTERN int
+SWIG_AsVal_float (PyObject * obj, float *val)
+{
+  double v;
+  int res = SWIG_AsVal_double (obj, &v);
   if (SWIG_IsOK(res)) {
-    if ((v < INT_MIN || v > INT_MAX)) {
+    if (SWIG_Float_Overflow_Check(v)) {
       return SWIG_OverflowError;
     } else {
-      if (val) *val = static_cast< int >(v);
+      if (val) *val = static_cast< float >(v);
     }
   }  
   return res;
+}
+
+
+  #define SWIG_From_double   PyFloat_FromDouble 
+
+
+SWIGINTERNINLINE PyObject *
+SWIG_From_float  (float value)
+{    
+  return SWIG_From_double  (value);
 }
 
 
@@ -5133,59 +5195,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_getElement(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  int arg1 ;
-  int arg2 ;
-  int arg3 ;
-  std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > > arg4 ;
-  int val1 ;
-  int ecode1 = 0 ;
-  int val2 ;
-  int ecode2 = 0 ;
-  int val3 ;
-  int ecode3 = 0 ;
-  void *argp4 ;
-  int res4 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-  PyObject * obj3 = 0 ;
-  int result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OOOO:getElement",&obj0,&obj1,&obj2,&obj3)) SWIG_fail;
-  ecode1 = SWIG_AsVal_int(obj0, &val1);
-  if (!SWIG_IsOK(ecode1)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "getElement" "', argument " "1"" of type '" "int""'");
-  } 
-  arg1 = static_cast< int >(val1);
-  ecode2 = SWIG_AsVal_int(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "getElement" "', argument " "2"" of type '" "int""'");
-  } 
-  arg2 = static_cast< int >(val2);
-  ecode3 = SWIG_AsVal_int(obj2, &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "getElement" "', argument " "3"" of type '" "int""'");
-  } 
-  arg3 = static_cast< int >(val3);
-  {
-    int newmem = 0;
-    res4 = SWIG_ConvertPtrAndOwn(obj3, &argp4, SWIGTYPE_p_std__shared_ptrT_std__vectorT_op__Datum_std__allocatorT_op__Datum_t_t_t,  0 , &newmem);
-    if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "getElement" "', argument " "4"" of type '" "std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > >""'"); 
-    }
-    if (argp4) arg4 = *(reinterpret_cast< std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > > * >(argp4));
-    if (newmem & SWIG_CAST_NEW_MEMORY) delete reinterpret_cast< std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > > * >(argp4);
-  }
-  result = (int)getElement(arg1,arg2,arg3,arg4);
-  resultobj = SWIG_From_int(static_cast< int >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_show(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   std::string arg1 ;
@@ -5251,6 +5260,1269 @@ fail:
   return NULL;
 }
 
+
+SWIGINTERN PyObject *_wrap_Datum_id_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  unsigned long long arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Datum_id_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_id_set" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Datum_id_set" "', argument " "2"" of type '" "unsigned long long""'");
+  } 
+  arg2 = static_cast< unsigned long long >(val2);
+  if (arg1) (arg1)->id = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_id_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  unsigned long long result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Datum_id_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_id_get" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  result = (unsigned long long) ((arg1)->id);
+  resultobj = SWIG_From_unsigned_SS_long_SS_long(static_cast< unsigned long long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_name_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Datum_name_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_name_set" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Datum_name_set" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Datum_name_set" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  if (arg1) (arg1)->name = *arg2;
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_name_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::string *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Datum_name_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_name_get" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  result = (std::string *) & ((arg1)->name);
+  resultobj = SWIG_From_std_string(static_cast< std::string >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_cvInputData_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  cv::Mat arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Datum_cvInputData_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_cvInputData_set" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_cv__Mat,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Datum_cvInputData_set" "', argument " "2"" of type '" "cv::Mat""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Datum_cvInputData_set" "', argument " "2"" of type '" "cv::Mat""'");
+    } else {
+      cv::Mat * temp = reinterpret_cast< cv::Mat * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  if (arg1) (arg1)->cvInputData = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_cvInputData_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  cv::Mat result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Datum_cvInputData_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_cvInputData_get" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  result =  ((arg1)->cvInputData);
+  resultobj = SWIG_NewPointerObj((new cv::Mat(static_cast< const cv::Mat& >(result))), SWIGTYPE_p_cv__Mat, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_inputNetData_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  Array< float > arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Datum_inputNetData_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_inputNetData_set" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_ArrayT_float_t,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Datum_inputNetData_set" "', argument " "2"" of type '" "Array< float >""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Datum_inputNetData_set" "', argument " "2"" of type '" "Array< float >""'");
+    } else {
+      Array< float > * temp = reinterpret_cast< Array< float > * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  if (arg1) (arg1)->inputNetData = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_inputNetData_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  Array< float > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Datum_inputNetData_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_inputNetData_get" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  result =  ((arg1)->inputNetData);
+  resultobj = SWIG_NewPointerObj((new Array< float >(static_cast< const Array< float >& >(result))), SWIGTYPE_p_ArrayT_float_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_outputData_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  Array< float > arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Datum_outputData_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_outputData_set" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_ArrayT_float_t,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Datum_outputData_set" "', argument " "2"" of type '" "Array< float >""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Datum_outputData_set" "', argument " "2"" of type '" "Array< float >""'");
+    } else {
+      Array< float > * temp = reinterpret_cast< Array< float > * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  if (arg1) (arg1)->outputData = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_outputData_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  Array< float > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Datum_outputData_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_outputData_get" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  result =  ((arg1)->outputData);
+  resultobj = SWIG_NewPointerObj((new Array< float >(static_cast< const Array< float >& >(result))), SWIGTYPE_p_ArrayT_float_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_cvOutputData_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  cv::Mat arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Datum_cvOutputData_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_cvOutputData_set" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_cv__Mat,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Datum_cvOutputData_set" "', argument " "2"" of type '" "cv::Mat""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Datum_cvOutputData_set" "', argument " "2"" of type '" "cv::Mat""'");
+    } else {
+      cv::Mat * temp = reinterpret_cast< cv::Mat * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  if (arg1) (arg1)->cvOutputData = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_cvOutputData_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  cv::Mat result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Datum_cvOutputData_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_cvOutputData_get" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  result =  ((arg1)->cvOutputData);
+  resultobj = SWIG_NewPointerObj((new cv::Mat(static_cast< const cv::Mat& >(result))), SWIGTYPE_p_cv__Mat, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_poseKeypoints_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  Array< float > arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Datum_poseKeypoints_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_poseKeypoints_set" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_ArrayT_float_t,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Datum_poseKeypoints_set" "', argument " "2"" of type '" "Array< float >""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Datum_poseKeypoints_set" "', argument " "2"" of type '" "Array< float >""'");
+    } else {
+      Array< float > * temp = reinterpret_cast< Array< float > * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  if (arg1) (arg1)->poseKeypoints = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_poseKeypoints_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  Array< float > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Datum_poseKeypoints_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_poseKeypoints_get" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  result =  ((arg1)->poseKeypoints);
+  resultobj = SWIG_NewPointerObj((new Array< float >(static_cast< const Array< float >& >(result))), SWIGTYPE_p_ArrayT_float_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_poseHeatMaps_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  Array< float > arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Datum_poseHeatMaps_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_poseHeatMaps_set" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_ArrayT_float_t,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Datum_poseHeatMaps_set" "', argument " "2"" of type '" "Array< float >""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Datum_poseHeatMaps_set" "', argument " "2"" of type '" "Array< float >""'");
+    } else {
+      Array< float > * temp = reinterpret_cast< Array< float > * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  if (arg1) (arg1)->poseHeatMaps = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_poseHeatMaps_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  Array< float > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Datum_poseHeatMaps_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_poseHeatMaps_get" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  result =  ((arg1)->poseHeatMaps);
+  resultobj = SWIG_NewPointerObj((new Array< float >(static_cast< const Array< float >& >(result))), SWIGTYPE_p_ArrayT_float_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_faceRectangles_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  std::vector< Rectangle< float >,std::allocator< Rectangle< float > > > *arg2 = (std::vector< Rectangle< float >,std::allocator< Rectangle< float > > > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Datum_faceRectangles_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_faceRectangles_set" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_std__vectorT_RectangleT_float_t_std__allocatorT_RectangleT_float_t_t_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Datum_faceRectangles_set" "', argument " "2"" of type '" "std::vector< Rectangle< float >,std::allocator< Rectangle< float > > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< Rectangle< float >,std::allocator< Rectangle< float > > > * >(argp2);
+  if (arg1) (arg1)->faceRectangles = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_faceRectangles_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::vector< Rectangle< float >,std::allocator< Rectangle< float > > > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Datum_faceRectangles_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_faceRectangles_get" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  result = (std::vector< Rectangle< float >,std::allocator< Rectangle< float > > > *)& ((arg1)->faceRectangles);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_RectangleT_float_t_std__allocatorT_RectangleT_float_t_t_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_faceKeypoints_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  Array< float > arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Datum_faceKeypoints_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_faceKeypoints_set" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_ArrayT_float_t,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Datum_faceKeypoints_set" "', argument " "2"" of type '" "Array< float >""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Datum_faceKeypoints_set" "', argument " "2"" of type '" "Array< float >""'");
+    } else {
+      Array< float > * temp = reinterpret_cast< Array< float > * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  if (arg1) (arg1)->faceKeypoints = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_faceKeypoints_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  Array< float > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Datum_faceKeypoints_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_faceKeypoints_get" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  result =  ((arg1)->faceKeypoints);
+  resultobj = SWIG_NewPointerObj((new Array< float >(static_cast< const Array< float >& >(result))), SWIGTYPE_p_ArrayT_float_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_handRectangles_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  std::vector< std::array< Rectangle< float >,2 >,std::allocator< std::array< Rectangle< float >,2 > > > *arg2 = (std::vector< std::array< Rectangle< float >,2 >,std::allocator< std::array< Rectangle< float >,2 > > > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Datum_handRectangles_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_handRectangles_set" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_std__vectorT_std__arrayT_RectangleT_float_t_2_t_std__allocatorT_std__arrayT_RectangleT_float_t_2_t_t_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Datum_handRectangles_set" "', argument " "2"" of type '" "std::vector< std::array< Rectangle< float >,2 >,std::allocator< std::array< Rectangle< float >,2 > > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< std::array< Rectangle< float >,2 >,std::allocator< std::array< Rectangle< float >,2 > > > * >(argp2);
+  if (arg1) (arg1)->handRectangles = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_handRectangles_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::vector< std::array< Rectangle< float >,2 >,std::allocator< std::array< Rectangle< float >,2 > > > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Datum_handRectangles_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_handRectangles_get" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  result = (std::vector< std::array< Rectangle< float >,2 >,std::allocator< std::array< Rectangle< float >,2 > > > *)& ((arg1)->handRectangles);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__arrayT_RectangleT_float_t_2_t_std__allocatorT_std__arrayT_RectangleT_float_t_2_t_t_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_handKeypoints_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  std::array< Array< float >,2 > arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Datum_handKeypoints_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_handKeypoints_set" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_std__arrayT_ArrayT_float_t_2_t,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Datum_handKeypoints_set" "', argument " "2"" of type '" "std::array< Array< float >,2 >""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Datum_handKeypoints_set" "', argument " "2"" of type '" "std::array< Array< float >,2 >""'");
+    } else {
+      std::array< Array< float >,2 > * temp = reinterpret_cast< std::array< Array< float >,2 > * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  if (arg1) (arg1)->handKeypoints = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_handKeypoints_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::array< Array< float >,2 > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Datum_handKeypoints_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_handKeypoints_get" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  result =  ((arg1)->handKeypoints);
+  resultobj = SWIG_NewPointerObj((new std::array< Array< float >,2 >(static_cast< const std::array< Array< float >,2 >& >(result))), SWIGTYPE_p_std__arrayT_ArrayT_float_t_2_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_scaleInputToOutput_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  float arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  float val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Datum_scaleInputToOutput_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_scaleInputToOutput_set" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  ecode2 = SWIG_AsVal_float(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Datum_scaleInputToOutput_set" "', argument " "2"" of type '" "float""'");
+  } 
+  arg2 = static_cast< float >(val2);
+  if (arg1) (arg1)->scaleInputToOutput = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_scaleInputToOutput_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  float result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Datum_scaleInputToOutput_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_scaleInputToOutput_get" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  result = (float) ((arg1)->scaleInputToOutput);
+  resultobj = SWIG_From_float(static_cast< float >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_scaleNetToOutput_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  float arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  float val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Datum_scaleNetToOutput_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_scaleNetToOutput_set" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  ecode2 = SWIG_AsVal_float(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Datum_scaleNetToOutput_set" "', argument " "2"" of type '" "float""'");
+  } 
+  arg2 = static_cast< float >(val2);
+  if (arg1) (arg1)->scaleNetToOutput = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_scaleNetToOutput_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  float result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Datum_scaleNetToOutput_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_scaleNetToOutput_get" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  result = (float) ((arg1)->scaleNetToOutput);
+  resultobj = SWIG_From_float(static_cast< float >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_scaleRatios_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  std::vector< float,std::allocator< float > > *arg2 = (std::vector< float,std::allocator< float > > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Datum_scaleRatios_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_scaleRatios_set" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_std__vectorT_float_std__allocatorT_float_t_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Datum_scaleRatios_set" "', argument " "2"" of type '" "std::vector< float,std::allocator< float > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< float,std::allocator< float > > * >(argp2);
+  if (arg1) (arg1)->scaleRatios = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_scaleRatios_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::vector< float,std::allocator< float > > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Datum_scaleRatios_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_scaleRatios_get" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  result = (std::vector< float,std::allocator< float > > *)& ((arg1)->scaleRatios);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_float_std__allocatorT_float_t_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_elementRendered_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  std::pair< int,std::string > *arg2 = (std::pair< int,std::string > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Datum_elementRendered_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_elementRendered_set" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_std__pairT_int_std__string_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Datum_elementRendered_set" "', argument " "2"" of type '" "std::pair< int,std::string > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::pair< int,std::string > * >(argp2);
+  if (arg1) (arg1)->elementRendered = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_elementRendered_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::pair< int,std::string > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Datum_elementRendered_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_elementRendered_get" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  result = (std::pair< int,std::string > *)& ((arg1)->elementRendered);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__pairT_int_std__string_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_Datum__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_Datum")) SWIG_fail;
+  result = (op::Datum *)new op::Datum();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_op__Datum, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_Datum__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  op::Datum *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_Datum",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_op__Datum,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_Datum" "', argument " "1"" of type '" "op::Datum const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "new_Datum" "', argument " "1"" of type '" "op::Datum const &""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  result = (op::Datum *)new op::Datum((op::Datum const &)*arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_op__Datum, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_Datum__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  op::Datum *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_Datum",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_op__Datum,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_Datum" "', argument " "1"" of type '" "op::Datum &&""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "new_Datum" "', argument " "1"" of type '" "op::Datum &&""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  result = (op::Datum *)new op::Datum((op::Datum &&)*arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_op__Datum, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_Datum(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[2] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 1) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 0) {
+    return _wrap_new_Datum__SWIG_0(self, args);
+  }
+  if (argc == 1) {
+    int _v;
+    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_op__Datum, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_new_Datum__SWIG_1(self, args);
+    }
+  }
+  if (argc == 1) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_op__Datum, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_new_Datum__SWIG_2(self, args);
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'new_Datum'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    op::Datum::Datum()\n"
+    "    op::Datum::Datum(op::Datum const &)\n"
+    "    op::Datum::Datum(op::Datum &&)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_Datum(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_Datum",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Datum" "', argument " "1"" of type '" "op::Datum *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum_clone(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  op::Datum result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Datum_clone",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum_clone" "', argument " "1"" of type '" "op::Datum const *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  result = ((op::Datum const *)arg1)->clone();
+  resultobj = SWIG_NewPointerObj((new op::Datum(static_cast< const op::Datum& >(result))), SWIGTYPE_p_op__Datum, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum___lt__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  op::Datum *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Datum___lt__",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum___lt__" "', argument " "1"" of type '" "op::Datum const *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_op__Datum,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Datum___lt__" "', argument " "2"" of type '" "op::Datum const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Datum___lt__" "', argument " "2"" of type '" "op::Datum const &""'"); 
+  }
+  arg2 = reinterpret_cast< op::Datum * >(argp2);
+  result = (bool)((op::Datum const *)arg1)->operator <((op::Datum const &)*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum___gt__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  op::Datum *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Datum___gt__",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum___gt__" "', argument " "1"" of type '" "op::Datum const *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_op__Datum,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Datum___gt__" "', argument " "2"" of type '" "op::Datum const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Datum___gt__" "', argument " "2"" of type '" "op::Datum const &""'"); 
+  }
+  arg2 = reinterpret_cast< op::Datum * >(argp2);
+  result = (bool)((op::Datum const *)arg1)->operator >((op::Datum const &)*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum___le__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  op::Datum *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Datum___le__",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum___le__" "', argument " "1"" of type '" "op::Datum const *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_op__Datum,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Datum___le__" "', argument " "2"" of type '" "op::Datum const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Datum___le__" "', argument " "2"" of type '" "op::Datum const &""'"); 
+  }
+  arg2 = reinterpret_cast< op::Datum * >(argp2);
+  result = (bool)((op::Datum const *)arg1)->operator <=((op::Datum const &)*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum___ge__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  op::Datum *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Datum___ge__",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum___ge__" "', argument " "1"" of type '" "op::Datum const *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_op__Datum,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Datum___ge__" "', argument " "2"" of type '" "op::Datum const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Datum___ge__" "', argument " "2"" of type '" "op::Datum const &""'"); 
+  }
+  arg2 = reinterpret_cast< op::Datum * >(argp2);
+  result = (bool)((op::Datum const *)arg1)->operator >=((op::Datum const &)*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum___eq__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  op::Datum *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Datum___eq__",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum___eq__" "', argument " "1"" of type '" "op::Datum const *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_op__Datum,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Datum___eq__" "', argument " "2"" of type '" "op::Datum const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Datum___eq__" "', argument " "2"" of type '" "op::Datum const &""'"); 
+  }
+  arg2 = reinterpret_cast< op::Datum * >(argp2);
+  result = (bool)((op::Datum const *)arg1)->operator ==((op::Datum const &)*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Datum___ne__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  op::Datum *arg1 = (op::Datum *) 0 ;
+  op::Datum *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Datum___ne__",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_op__Datum, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Datum___ne__" "', argument " "1"" of type '" "op::Datum const *""'"); 
+  }
+  arg1 = reinterpret_cast< op::Datum * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_op__Datum,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Datum___ne__" "', argument " "2"" of type '" "op::Datum const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Datum___ne__" "', argument " "2"" of type '" "op::Datum const &""'"); 
+  }
+  arg2 = reinterpret_cast< op::Datum * >(argp2);
+  result = (bool)((op::Datum const *)arg1)->operator !=((op::Datum const &)*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *Datum_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char *)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_op__Datum, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
 
 SWIGINTERN PyObject *_wrap_new_datum(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
@@ -6027,9 +7299,50 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"setCvInputData", _wrap_setCvInputData, METH_VARARGS, NULL},
 	 { (char *)"setInput", _wrap_setInput, METH_VARARGS, NULL},
 	 { (char *)"matToNumpyString", _wrap_matToNumpyString, METH_VARARGS, NULL},
-	 { (char *)"getElement", _wrap_getElement, METH_VARARGS, NULL},
 	 { (char *)"show", _wrap_show, METH_VARARGS, NULL},
 	 { (char *)"matToArray", _wrap_matToArray, METH_VARARGS, NULL},
+	 { (char *)"Datum_id_set", _wrap_Datum_id_set, METH_VARARGS, NULL},
+	 { (char *)"Datum_id_get", _wrap_Datum_id_get, METH_VARARGS, NULL},
+	 { (char *)"Datum_name_set", _wrap_Datum_name_set, METH_VARARGS, NULL},
+	 { (char *)"Datum_name_get", _wrap_Datum_name_get, METH_VARARGS, NULL},
+	 { (char *)"Datum_cvInputData_set", _wrap_Datum_cvInputData_set, METH_VARARGS, NULL},
+	 { (char *)"Datum_cvInputData_get", _wrap_Datum_cvInputData_get, METH_VARARGS, NULL},
+	 { (char *)"Datum_inputNetData_set", _wrap_Datum_inputNetData_set, METH_VARARGS, NULL},
+	 { (char *)"Datum_inputNetData_get", _wrap_Datum_inputNetData_get, METH_VARARGS, NULL},
+	 { (char *)"Datum_outputData_set", _wrap_Datum_outputData_set, METH_VARARGS, NULL},
+	 { (char *)"Datum_outputData_get", _wrap_Datum_outputData_get, METH_VARARGS, NULL},
+	 { (char *)"Datum_cvOutputData_set", _wrap_Datum_cvOutputData_set, METH_VARARGS, NULL},
+	 { (char *)"Datum_cvOutputData_get", _wrap_Datum_cvOutputData_get, METH_VARARGS, NULL},
+	 { (char *)"Datum_poseKeypoints_set", _wrap_Datum_poseKeypoints_set, METH_VARARGS, NULL},
+	 { (char *)"Datum_poseKeypoints_get", _wrap_Datum_poseKeypoints_get, METH_VARARGS, NULL},
+	 { (char *)"Datum_poseHeatMaps_set", _wrap_Datum_poseHeatMaps_set, METH_VARARGS, NULL},
+	 { (char *)"Datum_poseHeatMaps_get", _wrap_Datum_poseHeatMaps_get, METH_VARARGS, NULL},
+	 { (char *)"Datum_faceRectangles_set", _wrap_Datum_faceRectangles_set, METH_VARARGS, NULL},
+	 { (char *)"Datum_faceRectangles_get", _wrap_Datum_faceRectangles_get, METH_VARARGS, NULL},
+	 { (char *)"Datum_faceKeypoints_set", _wrap_Datum_faceKeypoints_set, METH_VARARGS, NULL},
+	 { (char *)"Datum_faceKeypoints_get", _wrap_Datum_faceKeypoints_get, METH_VARARGS, NULL},
+	 { (char *)"Datum_handRectangles_set", _wrap_Datum_handRectangles_set, METH_VARARGS, NULL},
+	 { (char *)"Datum_handRectangles_get", _wrap_Datum_handRectangles_get, METH_VARARGS, NULL},
+	 { (char *)"Datum_handKeypoints_set", _wrap_Datum_handKeypoints_set, METH_VARARGS, NULL},
+	 { (char *)"Datum_handKeypoints_get", _wrap_Datum_handKeypoints_get, METH_VARARGS, NULL},
+	 { (char *)"Datum_scaleInputToOutput_set", _wrap_Datum_scaleInputToOutput_set, METH_VARARGS, NULL},
+	 { (char *)"Datum_scaleInputToOutput_get", _wrap_Datum_scaleInputToOutput_get, METH_VARARGS, NULL},
+	 { (char *)"Datum_scaleNetToOutput_set", _wrap_Datum_scaleNetToOutput_set, METH_VARARGS, NULL},
+	 { (char *)"Datum_scaleNetToOutput_get", _wrap_Datum_scaleNetToOutput_get, METH_VARARGS, NULL},
+	 { (char *)"Datum_scaleRatios_set", _wrap_Datum_scaleRatios_set, METH_VARARGS, NULL},
+	 { (char *)"Datum_scaleRatios_get", _wrap_Datum_scaleRatios_get, METH_VARARGS, NULL},
+	 { (char *)"Datum_elementRendered_set", _wrap_Datum_elementRendered_set, METH_VARARGS, NULL},
+	 { (char *)"Datum_elementRendered_get", _wrap_Datum_elementRendered_get, METH_VARARGS, NULL},
+	 { (char *)"new_Datum", _wrap_new_Datum, METH_VARARGS, NULL},
+	 { (char *)"delete_Datum", _wrap_delete_Datum, METH_VARARGS, NULL},
+	 { (char *)"Datum_clone", _wrap_Datum_clone, METH_VARARGS, NULL},
+	 { (char *)"Datum___lt__", _wrap_Datum___lt__, METH_VARARGS, NULL},
+	 { (char *)"Datum___gt__", _wrap_Datum___gt__, METH_VARARGS, NULL},
+	 { (char *)"Datum___le__", _wrap_Datum___le__, METH_VARARGS, NULL},
+	 { (char *)"Datum___ge__", _wrap_Datum___ge__, METH_VARARGS, NULL},
+	 { (char *)"Datum___eq__", _wrap_Datum___eq__, METH_VARARGS, NULL},
+	 { (char *)"Datum___ne__", _wrap_Datum___ne__, METH_VARARGS, NULL},
+	 { (char *)"Datum_swigregister", Datum_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_datum", _wrap_new_datum, METH_VARARGS, NULL},
 	 { (char *)"delete_datum", _wrap_delete_datum, METH_VARARGS, NULL},
 	 { (char *)"datum___getitem__", _wrap_datum___getitem__, METH_VARARGS, NULL},
@@ -6079,6 +7392,7 @@ static void *_p_MatTo_p_cv__Mat(void *x, int *SWIGUNUSEDPARM(newmemory)) {
 static void *_p_matTo_p_cv__Mat(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((cv::Mat *)  ((mat *) x));
 }
+static swig_type_info _swigt__p_ArrayT_float_t = {"_p_ArrayT_float_t", "Array< float > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_Mat = {"_p_Mat", "Mat *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_cv__Mat = {"_p_cv__Mat", "cv::Mat *", 0, 0, (void*)0, 0};
@@ -6086,15 +7400,20 @@ static swig_type_info _swigt__p_datum = {"_p_datum", "datum *", 0, 0, (void*)0, 
 static swig_type_info _swigt__p_float = {"_p_float", "float *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_mat = {"_p_mat", "mat *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_op__Datum = {"_p_op__Datum", "op::Datum *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__arrayT_ArrayT_float_t_2_t = {"_p_std__arrayT_ArrayT_float_t_2_t", "std::array< Array< float >,2 > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__invalid_argument = {"_p_std__invalid_argument", "std::invalid_argument *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__pairT_int_std__string_t = {"_p_std__pairT_int_std__string_t", "std::pair< int,std::string > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__shared_ptrT_std__vectorT_op__Datum_std__allocatorT_op__Datum_t_t_t = {"_p_std__shared_ptrT_std__vectorT_op__Datum_std__allocatorT_op__Datum_t_t_t", "std::shared_ptr< std::vector< op::Datum > > *|std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_RectangleT_float_t_std__allocatorT_RectangleT_float_t_t_t = {"_p_std__vectorT_RectangleT_float_t_std__allocatorT_RectangleT_float_t_t_t", "std::vector< Rectangle< float >,std::allocator< Rectangle< float > > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_float_std__allocatorT_float_t_t = {"_p_std__vectorT_float_std__allocatorT_float_t_t", "std::vector< float,std::allocator< float > > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_std__arrayT_RectangleT_float_t_2_t_std__allocatorT_std__arrayT_RectangleT_float_t_2_t_t_t = {"_p_std__vectorT_std__arrayT_RectangleT_float_t_2_t_std__allocatorT_std__arrayT_RectangleT_float_t_2_t_t_t", "std::vector< std::array< Rectangle< float >,2 >,std::allocator< std::array< Rectangle< float >,2 > > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_std__vectorT_float_std__allocatorT_float_t_t_std__allocatorT_std__vectorT_float_std__allocatorT_float_t_t_t_t = {"_p_std__vectorT_std__vectorT_float_std__allocatorT_float_t_t_std__allocatorT_std__vectorT_float_std__allocatorT_float_t_t_t_t", "std::vector< std::vector< float,std::allocator< float > >,std::allocator< std::vector< float,std::allocator< float > > > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_uchar_std__allocatorT_uchar_t_t = {"_p_std__vectorT_uchar_std__allocatorT_uchar_t_t", "std::vector< uchar,std::allocator< uchar > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_swig__SwigPyIterator = {"_p_swig__SwigPyIterator", "swig::SwigPyIterator *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_ucharMat = {"_p_ucharMat", "ucharMat *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
+  &_swigt__p_ArrayT_float_t,
   &_swigt__p_Mat,
   &_swigt__p_char,
   &_swigt__p_cv__Mat,
@@ -6102,15 +7421,20 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_float,
   &_swigt__p_mat,
   &_swigt__p_op__Datum,
+  &_swigt__p_std__arrayT_ArrayT_float_t_2_t,
   &_swigt__p_std__invalid_argument,
+  &_swigt__p_std__pairT_int_std__string_t,
   &_swigt__p_std__shared_ptrT_std__vectorT_op__Datum_std__allocatorT_op__Datum_t_t_t,
+  &_swigt__p_std__vectorT_RectangleT_float_t_std__allocatorT_RectangleT_float_t_t_t,
   &_swigt__p_std__vectorT_float_std__allocatorT_float_t_t,
+  &_swigt__p_std__vectorT_std__arrayT_RectangleT_float_t_2_t_std__allocatorT_std__arrayT_RectangleT_float_t_2_t_t_t,
   &_swigt__p_std__vectorT_std__vectorT_float_std__allocatorT_float_t_t_std__allocatorT_std__vectorT_float_std__allocatorT_float_t_t_t_t,
   &_swigt__p_std__vectorT_uchar_std__allocatorT_uchar_t_t,
   &_swigt__p_swig__SwigPyIterator,
   &_swigt__p_ucharMat,
 };
 
+static swig_cast_info _swigc__p_ArrayT_float_t[] = {  {&_swigt__p_ArrayT_float_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Mat[] = {  {&_swigt__p_Mat, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_cv__Mat[] = {  {&_swigt__p_cv__Mat, 0, 0, 0},  {&_swigt__p_Mat, _p_MatTo_p_cv__Mat, 0, 0},  {&_swigt__p_mat, _p_matTo_p_cv__Mat, 0, 0},{0, 0, 0, 0}};
@@ -6118,15 +7442,20 @@ static swig_cast_info _swigc__p_datum[] = {  {&_swigt__p_datum, 0, 0, 0},{0, 0, 
 static swig_cast_info _swigc__p_float[] = {  {&_swigt__p_float, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_mat[] = {  {&_swigt__p_mat, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_op__Datum[] = {  {&_swigt__p_op__Datum, 0, 0, 0},  {&_swigt__p_datum, _p_datumTo_p_op__Datum, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__arrayT_ArrayT_float_t_2_t[] = {  {&_swigt__p_std__arrayT_ArrayT_float_t_2_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__invalid_argument[] = {  {&_swigt__p_std__invalid_argument, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__pairT_int_std__string_t[] = {  {&_swigt__p_std__pairT_int_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__shared_ptrT_std__vectorT_op__Datum_std__allocatorT_op__Datum_t_t_t[] = {  {&_swigt__p_std__shared_ptrT_std__vectorT_op__Datum_std__allocatorT_op__Datum_t_t_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_RectangleT_float_t_std__allocatorT_RectangleT_float_t_t_t[] = {  {&_swigt__p_std__vectorT_RectangleT_float_t_std__allocatorT_RectangleT_float_t_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_float_std__allocatorT_float_t_t[] = {  {&_swigt__p_std__vectorT_float_std__allocatorT_float_t_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_std__arrayT_RectangleT_float_t_2_t_std__allocatorT_std__arrayT_RectangleT_float_t_2_t_t_t[] = {  {&_swigt__p_std__vectorT_std__arrayT_RectangleT_float_t_2_t_std__allocatorT_std__arrayT_RectangleT_float_t_2_t_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_std__vectorT_float_std__allocatorT_float_t_t_std__allocatorT_std__vectorT_float_std__allocatorT_float_t_t_t_t[] = {  {&_swigt__p_std__vectorT_std__vectorT_float_std__allocatorT_float_t_t_std__allocatorT_std__vectorT_float_std__allocatorT_float_t_t_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_uchar_std__allocatorT_uchar_t_t[] = {  {&_swigt__p_ucharMat, _p_ucharMatTo_p_std__vectorT_uchar_std__allocatorT_uchar_t_t, 0, 0},  {&_swigt__p_std__vectorT_uchar_std__allocatorT_uchar_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_swig__SwigPyIterator[] = {  {&_swigt__p_swig__SwigPyIterator, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_ucharMat[] = {  {&_swigt__p_ucharMat, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
+  _swigc__p_ArrayT_float_t,
   _swigc__p_Mat,
   _swigc__p_char,
   _swigc__p_cv__Mat,
@@ -6134,9 +7463,13 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_float,
   _swigc__p_mat,
   _swigc__p_op__Datum,
+  _swigc__p_std__arrayT_ArrayT_float_t_2_t,
   _swigc__p_std__invalid_argument,
+  _swigc__p_std__pairT_int_std__string_t,
   _swigc__p_std__shared_ptrT_std__vectorT_op__Datum_std__allocatorT_op__Datum_t_t_t,
+  _swigc__p_std__vectorT_RectangleT_float_t_std__allocatorT_RectangleT_float_t_t_t,
   _swigc__p_std__vectorT_float_std__allocatorT_float_t_t,
+  _swigc__p_std__vectorT_std__arrayT_RectangleT_float_t_2_t_std__allocatorT_std__arrayT_RectangleT_float_t_2_t_t_t,
   _swigc__p_std__vectorT_std__vectorT_float_std__allocatorT_float_t_t_std__allocatorT_std__vectorT_float_std__allocatorT_float_t_t_t_t,
   _swigc__p_std__vectorT_uchar_std__allocatorT_uchar_t_t,
   _swigc__p_swig__SwigPyIterator,

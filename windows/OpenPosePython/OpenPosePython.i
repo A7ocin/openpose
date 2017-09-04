@@ -39,7 +39,6 @@ extern void emplaceBack(std::shared_ptr<std::vector<op::Datum>> dptr);
 extern void setCvInputData(std::shared_ptr<std::vector<op::Datum>> dptr, std::string image);
 extern void setInput(std::shared_ptr<std::vector<op::Datum>> dptr, std::vector<std::vector<float>> image);
 extern std::string matToNumpyString(std::shared_ptr<std::vector<op::Datum>> dptr);
-extern int getElement(int w, int h, int c, std::shared_ptr<std::vector<op::Datum>> dptr);
 extern void show(std::string name, std::shared_ptr<std::vector<op::Datum>> dptr);
 extern std::vector<float> matToArray(cv::Mat mat);
 %}
@@ -72,6 +71,5 @@ extern void emplaceBack(std::shared_ptr<std::vector<op::Datum>> dptr);
 extern void setCvInputData(std::shared_ptr<std::vector<op::Datum>> dptr, std::string image);
 extern void setInput(std::shared_ptr<std::vector<op::Datum>> dptr, std::vector<std::vector<float>> image);
 extern std::string matToNumpyString(std::shared_ptr<std::vector<op::Datum>> dptr);
-extern int getElement(int w, int h, int c, std::shared_ptr<std::vector<op::Datum>> dptr);
 extern void show(std::string name, std::shared_ptr<std::vector<op::Datum>> dptr);
 extern std::vector<float> matToArray(cv::Mat mat);

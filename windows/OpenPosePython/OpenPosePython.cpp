@@ -201,10 +201,6 @@ std::string matToNumpyString(std::shared_ptr<std::vector<op::Datum>> dptr) {
 	return s;
 }
 
-int getElement(int w, int h, int c, std::shared_ptr<std::vector<op::Datum>> dptr) {
-	return dptr->at(0).cvOutputData.at<int>(w,h,c);
-}
-
 void show(std::string name, std::shared_ptr<std::vector<op::Datum>> dptr) {
 	if (dptr != nullptr && !dptr->empty())
 	{
