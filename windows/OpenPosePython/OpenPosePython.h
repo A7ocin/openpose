@@ -36,7 +36,7 @@
 
 void test();
 
-int openPoseTutorialWrapper1(std::shared_ptr<std::vector<op::Datum>> datumToProcess);
+bool openPoseTutorialWrapper1(std::shared_ptr<std::vector<op::Datum>> datumToProcess);
 
 std::shared_ptr<std::vector<op::Datum>> new_datumsPtr();
 
@@ -49,5 +49,8 @@ void emplaceBack(std::shared_ptr<std::vector<op::Datum>> dptr);
 void setCvInputData(std::shared_ptr<std::vector<op::Datum>> dptr, std::string image);
 void setInput(std::shared_ptr<std::vector<op::Datum>> dptr, std::vector<std::vector<float>> image);
 std::string matToNumpyString(std::shared_ptr<std::vector<op::Datum>> dptr);
+int getElement(int w, int h, int c, std::shared_ptr<std::vector<op::Datum>> dptr);
+void setElement(int h, int w, int c, std::shared_ptr<std::vector<op::Datum>> dptr, int value);
+void initInput(std::shared_ptr<std::vector<op::Datum>> dptr);
 void show(std::string name, std::shared_ptr<std::vector<op::Datum>> dptr);
 std::vector<float> matToArray(cv::Mat mat);

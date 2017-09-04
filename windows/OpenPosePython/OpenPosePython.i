@@ -28,7 +28,7 @@ using namespace std;
 using namespace op;
 
 extern void test();
-extern int openPoseTutorialWrapper1(std::shared_ptr<std::vector<op::Datum>> datumToProcess);
+extern bool openPoseTutorialWrapper1(std::shared_ptr<std::vector<op::Datum>> datumToProcess);
 extern std::shared_ptr<std::vector<op::Datum>> new_datumsPtr();
 extern int get(std::shared_ptr<std::vector<op::Datum>> dptr);
 extern op::Datum datumsPtr_at(std::shared_ptr<std::vector<op::Datum>> dptr);
@@ -39,6 +39,9 @@ extern void emplaceBack(std::shared_ptr<std::vector<op::Datum>> dptr);
 extern void setCvInputData(std::shared_ptr<std::vector<op::Datum>> dptr, std::string image);
 extern void setInput(std::shared_ptr<std::vector<op::Datum>> dptr, std::vector<std::vector<float>> image);
 extern std::string matToNumpyString(std::shared_ptr<std::vector<op::Datum>> dptr);
+extern int getElement(int w, int h, int c, std::shared_ptr<std::vector<op::Datum>> dptr);
+extern void setElement(int h, int w, int c, std::shared_ptr<std::vector<op::Datum>> dptr, int value);
+extern void initInput(std::shared_ptr<std::vector<op::Datum>> dptr);
 extern void show(std::string name, std::shared_ptr<std::vector<op::Datum>> dptr);
 extern std::vector<float> matToArray(cv::Mat mat);
 %}
@@ -60,7 +63,7 @@ namespacec std{
 %array_class(cv::Mat, Mat);
 
 extern void test();
-extern int openPoseTutorialWrapper1(std::shared_ptr<std::vector<op::Datum>> datumToProcess);
+extern bool openPoseTutorialWrapper1(std::shared_ptr<std::vector<op::Datum>> datumToProcess);
 extern std::shared_ptr<std::vector<op::Datum>> new_datumsPtr();
 extern int get(std::shared_ptr<std::vector<op::Datum>> dptr);
 extern op::Datum datumsPtr_at(std::shared_ptr<std::vector<op::Datum>> dptr);
@@ -71,5 +74,8 @@ extern void emplaceBack(std::shared_ptr<std::vector<op::Datum>> dptr);
 extern void setCvInputData(std::shared_ptr<std::vector<op::Datum>> dptr, std::string image);
 extern void setInput(std::shared_ptr<std::vector<op::Datum>> dptr, std::vector<std::vector<float>> image);
 extern std::string matToNumpyString(std::shared_ptr<std::vector<op::Datum>> dptr);
+extern int getElement(int w, int h, int c, std::shared_ptr<std::vector<op::Datum>> dptr);
+extern void setElement(int h, int w, int c, std::shared_ptr<std::vector<op::Datum>> dptr, int value);
+extern void initInput(std::shared_ptr<std::vector<op::Datum>> dptr);
 extern void show(std::string name, std::shared_ptr<std::vector<op::Datum>> dptr);
 extern std::vector<float> matToArray(cv::Mat mat);

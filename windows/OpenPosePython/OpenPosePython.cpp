@@ -9,77 +9,11 @@ using namespace op;
 // Producer
 DEFINE_string(image_dir, "examples/media/", "Process a directory of images. Read all standard formats (jpg, png, bmp, etc.).");
 
-// The W-classes can be implemented either as a template or as simple classes given
-// that the user usually knows which kind of data he will move between the queues,
-// in this case we assume a std::shared_ptr of a std::vector of op::Datum
-
-// This worker will just read and return all the jpg files in a directory
-//UserInputClass::UserInputClass(const std::string& directoryPath) :
-//	mImageFiles{ op::getFilesOnDirectory(directoryPath, "jpg") },
-//	// mImageFiles{op::getFilesOnDirectory(directoryPath, std::vector<std::string>{"jpg", "png"})}, // If we want "jpg" + "png" images
-//	mCounter{ 0 },
-//	mClosed{ false }
-//{
-//	if (mImageFiles.empty())
-//		op::error("No images found on: " + directoryPath, __LINE__, __FUNCTION__, __FILE__);
-//}
-//
-//std::shared_ptr<std::vector<op::Datum>> UserInputClass::createDatum(std::shared_ptr<std::vector<op::Datum>> datumsPtr)
-//{
-//	// Close program when empty frame
-//	if (mClosed || mImageFiles.size() <= mCounter)
-//	{
-//		op::log("Last frame read and added to queue. Closing program after it is processed.", op::Priority::High);
-//		// This funtion stops this worker, which will eventually stop the whole thread system once all the frames have been processed
-//		mClosed = true;
-//		return nullptr;
-//	}
-//	else // if (!mClosed)
-//	{
-//		// Create new datum
-//		//datumsPtr = std::make_shared<std::vector<op::Datum>>();
-//		datumsPtr->emplace_back();
-//		auto& datum = datumsPtr->at(0);
-//
-//		// Fill datum
-//		datum.cvInputData = cv::imread(mImageFiles.at(mCounter++));
-//
-//		// If empty frame -> return nullptr
-//		if (datum.cvInputData.empty())
-//		{
-//			op::log("Empty frame detected on path: " + mImageFiles.at(mCounter - 1) + ". Closing program.", op::Priority::High);
-//			mClosed = true;
-//			datumsPtr = nullptr;
-//		}
-//
-//		return datumsPtr;
-//	}
-//}
-//
-//bool UserInputClass::isFinished() const
-//{
-//	return mClosed;
-//}
-
-//void UserOutputClass::display(const std::shared_ptr<std::vector<op::Datum>>& datumsPtr)
-//{
-//	// User's displaying/saving/other processing here
-//	// datum.cvOutputData: rendered frame with pose or heatmaps
-//	// datum.poseKeypoints: Array<float> with the estimated pose
-//	if (datumsPtr != nullptr && !datumsPtr->empty())
-//	{
-//		cv::imshow("User worker GUI", datumsPtr->at(0).cvOutputData);
-//		cv::waitKey(1); // It displays the image and sleeps at least 1 ms (it usually sleeps ~5-10 msec to display the image)
-//	}
-//	else
-//		op::log("Nullptr or empty datumsPtr found.", op::Priority::High, __LINE__, __FUNCTION__, __FILE__);
-//}
-
 void test() {
 	cout << "Working" << endl;
 }
 
-int openPoseTutorialWrapper1(std::shared_ptr<std::vector<op::Datum>> datumToProcess)
+bool openPoseTutorialWrapper1(std::shared_ptr<std::vector<op::Datum>> datumToProcess)
 {
 	int value = 0;
 	op::log("Starting pose estimation demo.", op::Priority::High);
@@ -108,11 +42,11 @@ int openPoseTutorialWrapper1(std::shared_ptr<std::vector<op::Datum>> datumToProc
 			if (successfullyEmplaced && opWrapper.waitAndPop(datumProcessed)) {
 				//userOutputClass.display(datumProcessed);
 				//show("User worker GUI", datumProcessed);
-				value = 0;
+				value = true;
 			}
 			else {
 				op::log("Processed datum could not be emplaced.", op::Priority::High, __LINE__, __FUNCTION__, __FILE__);
-				value = 1;
+				value = false;
 			}
 		}
 	//}
@@ -199,6 +133,24 @@ std::string matToNumpyString(std::shared_ptr<std::vector<op::Datum>> dptr) {
 	s.erase(s.length() - 16);
 	s.erase(0, 6);
 	return s;
+}
+
+int getElement(int h, int w, int c, std::shared_ptr<std::vector<op::Datum>> dptr) {
+	//std::cout << "Size: " << dptr->at(0).cvOutputData.size() << std::endl;
+	return dptr->at(0).cvOutputData.at<cv::Vec3b>(h,w)[c];
+}
+
+void setElement(int h, int w, int c, std::shared_ptr<std::vector<op::Datum>> dptr, int value) {
+	if (dptr->at(0).cvInputData.empty()) {
+		dptr->at(0).cvInputData = cv::Mat(720, 1280, CV_8UC3);
+	}
+	dptr->at(0).cvInputData.at<cv::Vec3b>(h, w)[c] = (unsigned char)value;
+}
+
+void initInput(std::shared_ptr<std::vector<op::Datum>> dptr) {
+	if (dptr->at(0).cvInputData.empty()) {
+		dptr->at(0).cvInputData = cv::Mat(720, 1280, CV_8UC3);
+	}
 }
 
 void show(std::string name, std::shared_ptr<std::vector<op::Datum>> dptr) {

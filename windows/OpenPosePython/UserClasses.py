@@ -18,7 +18,7 @@ class UserInputClass:
             print "No images found on: " + directoryPath
         os.chdir(cwd)
 
-    def createDatum(self, datumsPtr):
+    def createDatum(self, datumsPtr, image, resolution):
         # Close program when empty frame
 	    if (self.mClosed or len(self.mImageFiles) <= self.mCounter):
 		    print "Last frame read and added to queue. Closing program after it is processed."
@@ -30,21 +30,35 @@ class UserInputClass:
 		    opp.emplaceBack(datumsPtr)
             self.datum = opp.datum_frompointer(opp.datumsPtr_at(datumsPtr)).__getitem__(0)
 		    # Fill datum
-            #np_image = cv.imread(self.mImageFiles[self.mCounter])
-            #list_image = np_image.tolist()
-            #print type(list_image)
-            #print list_image
-            #opp.setInput(datumsPtr, list_image)
-            opp.setCvInputData(datumsPtr, self.mImageFiles[self.mCounter])     #TODO --> in Python
-            self.mCounter+=1
-
-		    # If empty frame -> return nullptr
+            self.setImage(datumsPtr, "1280x720", image)
             if not self.datum.cvInputData:
                 print "Empty frame detected on path: " + self.mImageFiles[mCounter - 1] + ". Closing program."
                 self.mClosed = True
                 datumsPtr = None
 
             return datumsPtr
+
+    def setImage(self, datumsPtr, resolution, np_image):
+        width = int(resolution.split('x')[0])
+        height = int(resolution.split('x')[1])
+        myWidth = len(np_image[0])
+        myHeight = len(np_image)
+        if (myHeight*float(width)/float(myWidth))>(height):
+                factor = float(height)/float(myHeight)
+        else:
+                factor = float(width)/float(myWidth)
+        np_image_temp = cv.resize(np_image, (int(myWidth*factor), int(myHeight*factor)))
+        np_image= cv.copyMakeBorder(np_image_temp,0,height-myHeight,0,width-myWidth,cv.BORDER_CONSTANT,value=[0,0,0])
+        channels = 3
+        for w in range(width):
+            for h in range(height):
+                for c in range(channels):
+                    opp.setElement(h, w, c, datumsPtr, int(np_image[h][w][c]))
+
+    def nextImage(self):
+        returnImage = self.mImageFiles[self.mCounter]
+        self.mCounter +=1
+        return returnImage
 
     def isFinished(self):
         return self.mClosed
@@ -54,40 +68,20 @@ class UserOutputClass:
     def init(self):
         return opp.UserOutputClass()
 
-    def display(self, datumsPtr, width, height):
-        # User's displaying/saving/other processing here
-	    # datum.cvOutputData: rendered frame with pose or heatmaps
-	    # datum.poseKeypoints: Array<float> with the estimated pose
-        print "Inside Display"
+    def getProcessedImage(self, datumsPtr, resolution):
         if (datumsPtr and not opp.datumsPtr_empty(datumsPtr)):
-            print "Datum OK"
-            #uchar_vec = opp.mat_at(datumsPtr)
-            #print uchar_vec
-
-            mat_array = opp.mat_frompointer(getDatum(datumsPtr).cvOutputData)
-            print "mat_array: " + str(getDatum(datumsPtr).cvOutputData)
-
-            #np_string = opp.matToNumpyString(datumsPtr)     # <--- Fine, it works!
-            #list_arr = ast.literal_eval(np_string)
-            #np_array = np.array(list_arr, dtype=np.uint8)
-            
+            width = int(resolution.split('x')[0])
+            height = int(resolution.split('x')[1])
             channels = 3
-            np_array = np.ndarray((width,height,channels), dtype=np.uint8)
-            for w in width:
-                    for h in height:
-                        for c in channels:
-                            np_array[w][h][c] = opp.getElement(w,h,c,datumsPtr)
-
-            cv.imshow("User worker GUI", np_array)  
-            cv.waitKey(1) # It displays the image and sleeps at least 1 ms (it usually sleeps ~5-10 msec to display the image)
+            np_array = np.ndarray((height,width,channels), dtype=np.uint8)
+            for w in range(width):
+                for h in range(height):
+                    for c in range(channels):
+                        np_array[h][w][c] = opp.getElement(h,w,c,datumsPtr)
+            return np_array
         else:
             print "Nullptr or empty datumsPtr found."
 
 def getDatum(datumsPtr):
     return opp.datum_frompointer(opp.datumsPtr_at(datumsPtr)).__getitem__(0)
 
-def flatten(x):
-    if isinstance(x, collections.Iterable):
-        return [a for i in x for a in flatten(i)]
-    else:
-        return [x]

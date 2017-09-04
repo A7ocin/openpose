@@ -209,6 +209,18 @@ def matToNumpyString(dptr):
     return _OpenPosePython.matToNumpyString(dptr)
 matToNumpyString = _OpenPosePython.matToNumpyString
 
+def getElement(w, h, c, dptr):
+    return _OpenPosePython.getElement(w, h, c, dptr)
+getElement = _OpenPosePython.getElement
+
+def setElement(h, w, c, dptr, value):
+    return _OpenPosePython.setElement(h, w, c, dptr, value)
+setElement = _OpenPosePython.setElement
+
+def initInput(dptr):
+    return _OpenPosePython.initInput(dptr)
+initInput = _OpenPosePython.initInput
+
 def show(name, dptr):
     return _OpenPosePython.show(name, dptr)
 show = _OpenPosePython.show

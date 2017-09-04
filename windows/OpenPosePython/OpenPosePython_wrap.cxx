@@ -3664,7 +3664,7 @@ using namespace std;
 using namespace op;
 
 extern void test();
-extern int openPoseTutorialWrapper1(std::shared_ptr<std::vector<op::Datum>> datumToProcess);
+extern bool openPoseTutorialWrapper1(std::shared_ptr<std::vector<op::Datum>> datumToProcess);
 extern std::shared_ptr<std::vector<op::Datum>> new_datumsPtr();
 extern int get(std::shared_ptr<std::vector<op::Datum>> dptr);
 extern op::Datum datumsPtr_at(std::shared_ptr<std::vector<op::Datum>> dptr);
@@ -3675,6 +3675,9 @@ extern void emplaceBack(std::shared_ptr<std::vector<op::Datum>> dptr);
 extern void setCvInputData(std::shared_ptr<std::vector<op::Datum>> dptr, std::string image);
 extern void setInput(std::shared_ptr<std::vector<op::Datum>> dptr, std::vector<std::vector<float>> image);
 extern std::string matToNumpyString(std::shared_ptr<std::vector<op::Datum>> dptr);
+extern int getElement(int w, int h, int c, std::shared_ptr<std::vector<op::Datum>> dptr);
+extern void setElement(int h, int w, int c, std::shared_ptr<std::vector<op::Datum>> dptr, int value);
+extern void initInput(std::shared_ptr<std::vector<op::Datum>> dptr);
 extern void show(std::string name, std::shared_ptr<std::vector<op::Datum>> dptr);
 extern std::vector<float> matToArray(cv::Mat mat);
 
@@ -3869,6 +3872,22 @@ SWIGINTERNINLINE PyObject *
 SWIG_From_std_string  (const std::string& s)
 {
   return SWIG_FromCharPtrAndSize(s.data(), s.size());
+}
+
+
+SWIGINTERN int
+SWIG_AsVal_int (PyObject * obj, int *val)
+{
+  long v;
+  int res = SWIG_AsVal_long (obj, &v);
+  if (SWIG_IsOK(res)) {
+    if ((v < INT_MIN || v > INT_MAX)) {
+      return SWIG_OverflowError;
+    } else {
+      if (val) *val = static_cast< int >(v);
+    }
+  }  
+  return res;
 }
 
 
@@ -4900,7 +4919,7 @@ SWIGINTERN PyObject *_wrap_openPoseTutorialWrapper1(PyObject *SWIGUNUSEDPARM(sel
   void *argp1 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
-  int result;
+  bool result;
   
   if (!PyArg_ParseTuple(args,(char *)"O:openPoseTutorialWrapper1",&obj0)) SWIG_fail;
   {
@@ -4912,8 +4931,8 @@ SWIGINTERN PyObject *_wrap_openPoseTutorialWrapper1(PyObject *SWIGUNUSEDPARM(sel
     if (argp1) arg1 = *(reinterpret_cast< std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > > * >(argp1));
     if (newmem & SWIG_CAST_NEW_MEMORY) delete reinterpret_cast< std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > > * >(argp1);
   }
-  result = (int)openPoseTutorialWrapper1(arg1);
-  resultobj = SWIG_From_int(static_cast< int >(result));
+  result = (bool)openPoseTutorialWrapper1(arg1);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
   return NULL;
@@ -5189,6 +5208,145 @@ SWIGINTERN PyObject *_wrap_matToNumpyString(PyObject *SWIGUNUSEDPARM(self), PyOb
   }
   result = matToNumpyString(arg1);
   resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_getElement(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  int arg1 ;
+  int arg2 ;
+  int arg3 ;
+  std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > > arg4 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  void *argp4 ;
+  int res4 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  int result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOO:getElement",&obj0,&obj1,&obj2,&obj3)) SWIG_fail;
+  ecode1 = SWIG_AsVal_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "getElement" "', argument " "1"" of type '" "int""'");
+  } 
+  arg1 = static_cast< int >(val1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "getElement" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "getElement" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  {
+    int newmem = 0;
+    res4 = SWIG_ConvertPtrAndOwn(obj3, &argp4, SWIGTYPE_p_std__shared_ptrT_std__vectorT_op__Datum_std__allocatorT_op__Datum_t_t_t,  0 , &newmem);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "getElement" "', argument " "4"" of type '" "std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > >""'"); 
+    }
+    if (argp4) arg4 = *(reinterpret_cast< std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > > * >(argp4));
+    if (newmem & SWIG_CAST_NEW_MEMORY) delete reinterpret_cast< std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > > * >(argp4);
+  }
+  result = (int)getElement(arg1,arg2,arg3,arg4);
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_setElement(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  int arg1 ;
+  int arg2 ;
+  int arg3 ;
+  std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > > arg4 ;
+  int arg5 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  void *argp4 ;
+  int res4 = 0 ;
+  int val5 ;
+  int ecode5 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOOO:setElement",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
+  ecode1 = SWIG_AsVal_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "setElement" "', argument " "1"" of type '" "int""'");
+  } 
+  arg1 = static_cast< int >(val1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "setElement" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "setElement" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  {
+    int newmem = 0;
+    res4 = SWIG_ConvertPtrAndOwn(obj3, &argp4, SWIGTYPE_p_std__shared_ptrT_std__vectorT_op__Datum_std__allocatorT_op__Datum_t_t_t,  0 , &newmem);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "setElement" "', argument " "4"" of type '" "std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > >""'"); 
+    }
+    if (argp4) arg4 = *(reinterpret_cast< std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > > * >(argp4));
+    if (newmem & SWIG_CAST_NEW_MEMORY) delete reinterpret_cast< std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > > * >(argp4);
+  }
+  ecode5 = SWIG_AsVal_int(obj4, &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "setElement" "', argument " "5"" of type '" "int""'");
+  } 
+  arg5 = static_cast< int >(val5);
+  setElement(arg1,arg2,arg3,arg4,arg5);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_initInput(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > > arg1 ;
+  void *argp1 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:initInput",&obj0)) SWIG_fail;
+  {
+    int newmem = 0;
+    res1 = SWIG_ConvertPtrAndOwn(obj0, &argp1, SWIGTYPE_p_std__shared_ptrT_std__vectorT_op__Datum_std__allocatorT_op__Datum_t_t_t,  0 , &newmem);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "initInput" "', argument " "1"" of type '" "std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > >""'"); 
+    }
+    if (argp1) arg1 = *(reinterpret_cast< std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > > * >(argp1));
+    if (newmem & SWIG_CAST_NEW_MEMORY) delete reinterpret_cast< std::shared_ptr< std::vector< op::Datum,std::allocator< op::Datum > > > * >(argp1);
+  }
+  initInput(arg1);
+  resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
   return NULL;
@@ -7299,6 +7457,9 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"setCvInputData", _wrap_setCvInputData, METH_VARARGS, NULL},
 	 { (char *)"setInput", _wrap_setInput, METH_VARARGS, NULL},
 	 { (char *)"matToNumpyString", _wrap_matToNumpyString, METH_VARARGS, NULL},
+	 { (char *)"getElement", _wrap_getElement, METH_VARARGS, NULL},
+	 { (char *)"setElement", _wrap_setElement, METH_VARARGS, NULL},
+	 { (char *)"initInput", _wrap_initInput, METH_VARARGS, NULL},
 	 { (char *)"show", _wrap_show, METH_VARARGS, NULL},
 	 { (char *)"matToArray", _wrap_matToArray, METH_VARARGS, NULL},
 	 { (char *)"Datum_id_set", _wrap_Datum_id_set, METH_VARARGS, NULL},
