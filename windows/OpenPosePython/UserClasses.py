@@ -20,22 +20,22 @@ class UserInputClass:
 
     def createDatum(self, datumsPtr, image, resolution):
         # Close program when empty frame
-	    if (self.mClosed or len(self.mImageFiles) <= self.mCounter):
-		    print "Last frame read and added to queue. Closing program after it is processed."
+        if (self.mClosed or len(self.mImageFiles) <= self.mCounter):
+            print "Last frame read and added to queue. Closing program after it is processed."
 		    # This funtion stops this worker, which will eventually stop the whole thread system once all the frames have been processed
-		    mClosed = True;
-		    return None;
-	    else: # if (!mClosed)
+            self.mClosed = True
+            return None
+        else: # if (!mClosed)
 		    # Create new datum
-		    opp.emplaceBack(datumsPtr)
+            opp.emplaceBack(datumsPtr)
             self.datum = opp.datum_frompointer(opp.datumsPtr_at(datumsPtr)).__getitem__(0)
-		    # Fill datum
+            # Fill datum
             self.setImage(datumsPtr, "1280x720", image)
             if not self.datum.cvInputData:
-                print "Empty frame detected on path: " + self.mImageFiles[mCounter - 1] + ". Closing program."
+                print "Empty frame detected on path: " + self.mImageFiles[self.mCounter - 1] + ". Closing program."
                 self.mClosed = True
                 datumsPtr = None
-
+                
             return datumsPtr
 
     def setImage(self, datumsPtr, resolution, np_image):

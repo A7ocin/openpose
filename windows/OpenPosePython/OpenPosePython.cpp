@@ -9,19 +9,26 @@ using namespace op;
 // Producer
 DEFINE_string(image_dir, "examples/media/", "Process a directory of images. Read all standard formats (jpg, png, bmp, etc.).");
 
+
+// Configure OpenPose
+op::Wrapper<std::vector<op::Datum>> opWrapper{ op::ThreadManagerMode::Asynchronous };
+// Pose configuration (use WrapperStructPose{} for default and recommended configuration)
+op::WrapperStructPose wrapperStructPose{};
+
+
 bool openPosePython(std::shared_ptr<std::vector<op::Datum>> datumToProcess)
 {
 	bool value = false;
 
-	// Configure OpenPose
-	op::Wrapper<std::vector<op::Datum>> opWrapper{ op::ThreadManagerMode::Asynchronous };
-	// Pose configuration (use WrapperStructPose{} for default and recommended configuration)
-	op::WrapperStructPose wrapperStructPose{};
-	wrapperStructPose.renderMode = op::RenderMode::Gpu;
-	// Configure wrapper
-	opWrapper.configure(wrapperStructPose);
+	//// Configure OpenPose
+	//op::Wrapper<std::vector<op::Datum>> opWrapper{ op::ThreadManagerMode::Asynchronous };
+	//// Pose configuration (use WrapperStructPose{} for default and recommended configuration)
+	//op::WrapperStructPose wrapperStructPose{};
+	//wrapperStructPose.renderMode = op::RenderMode::Gpu;
+	//// Configure wrapper
+	//opWrapper.configure(wrapperStructPose);
 
-	opWrapper.start();
+	//opWrapper.start();
 
 	//while (!userInputClass.isFinished())
 	//{
@@ -45,9 +52,21 @@ bool openPosePython(std::shared_ptr<std::vector<op::Datum>> datumToProcess)
 		}
 	//}
 
-	opWrapper.stop();
+	//opWrapper.stop();
 
 	return value;
+}
+
+void configure() {
+	wrapperStructPose.renderMode = op::RenderMode::Gpu;
+	// Configure wrapper
+	opWrapper.configure(wrapperStructPose);
+
+	opWrapper.start();
+}
+
+void stop() {
+	opWrapper.stop();
 }
 
 std::shared_ptr<std::vector<op::Datum>> new_datumsPtr() {

@@ -35,6 +35,8 @@
 //};
 
 bool openPosePython(std::shared_ptr<std::vector<op::Datum>> datumToProcess);
+void configure();
+void stop();
 
 std::shared_ptr<std::vector<op::Datum>> new_datumsPtr();
 

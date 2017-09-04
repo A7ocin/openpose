@@ -15,9 +15,15 @@
     <None Include="UserClasses.py">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="UserClassesCython.pyx">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OpenPosePython.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="swigpyobject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

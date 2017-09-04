@@ -3664,6 +3664,9 @@ using namespace std;
 using namespace op;
 
 extern bool openPosePython(std::shared_ptr<std::vector<op::Datum>> datumToProcess);
+extern void configure();
+extern void stop();
+
 extern std::shared_ptr<std::vector<op::Datum>> new_datumsPtr();
 extern int get(std::shared_ptr<std::vector<op::Datum>> dptr);
 extern op::Datum datumsPtr_at(std::shared_ptr<std::vector<op::Datum>> dptr);
@@ -4920,6 +4923,30 @@ SWIGINTERN PyObject *_wrap_openPosePython(PyObject *SWIGUNUSEDPARM(self), PyObje
   }
   result = (bool)openPosePython(arg1);
   resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_configure(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  
+  if (!PyArg_ParseTuple(args,(char *)":configure")) SWIG_fail;
+  configure();
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_stop(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  
+  if (!PyArg_ParseTuple(args,(char *)":stop")) SWIG_fail;
+  stop();
+  resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
   return NULL;
@@ -7433,6 +7460,8 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"SwigPyIterator___sub__", _wrap_SwigPyIterator___sub__, METH_VARARGS, NULL},
 	 { (char *)"SwigPyIterator_swigregister", SwigPyIterator_swigregister, METH_VARARGS, NULL},
 	 { (char *)"openPosePython", _wrap_openPosePython, METH_VARARGS, NULL},
+	 { (char *)"configure", _wrap_configure, METH_VARARGS, NULL},
+	 { (char *)"stop", _wrap_stop, METH_VARARGS, NULL},
 	 { (char *)"new_datumsPtr", _wrap_new_datumsPtr, METH_VARARGS, NULL},
 	 { (char *)"get", _wrap_get, METH_VARARGS, NULL},
 	 { (char *)"datumsPtr_at", _wrap_datumsPtr_at, METH_VARARGS, NULL},

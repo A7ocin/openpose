@@ -23,9 +23,11 @@ swig.exe -I../../include -c++ -python "%(FullPath)"</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\include\openpose\headers.hpp</AdditionalInputs>
     </CustomBuild>
     <None Include="UserClasses.py" />
+    <None Include="UserClassesCython.pyx" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OpenPosePython.h" />
+    <ClInclude Include="swigpyobject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OpenPosePython.cpp" />

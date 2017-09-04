@@ -7,7 +7,7 @@ import time
 
 sys.path.insert(0, 'windows/OpenPosePython')
 
-import UserClasses
+import UserClassesCython as UserClasses
 import OpenPosePython as opp
 
 DEFINE_string("image_dir",                "examples/media/",      "Process a directory of images. Read all standard formats (jpg, png, bmp, etc.).")
@@ -21,21 +21,30 @@ def main(argv):
     start = time.time()
     print "Starting pose estimation demo."
 
+    opp.configure()
+    print "Configuration done."
+
     while not userInputClass.isFinished():
         datumsPtr = opp.new_datumsPtr()
         inputImage = cv.imread(userInputClass.nextImage())
         
         if not userInputClass.createDatum(datumsPtr, inputImage, FLAGS.resolution):
-                break
+            break
+        print "."
         if not opp.openPosePython(datumsPtr):
             print "Wrapper Error"
+            break
         
         outputImage = userOutputClass.getProcessedImage(datumsPtr, str(FLAGS.resolution))
         cv.imshow("User worker GUI", outputImage)  
         cv.waitKey(1) # It displays the image and sleeps at least 1 ms (it usually sleeps ~5-10 msec to display the image)
-    
+        
+    print "Stopping OpenPose..."
+    opp.stop();
+    print "OpenPose stopped."
     end = time.time()
     print "Real-time pose estimation demo successfully finished. Total time: " + str(end - start) + "seconds."
+    return
 
 if __name__ == '__main__':
     app.run()

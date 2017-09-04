@@ -165,6 +165,14 @@ def openPosePython(datumToProcess):
     return _OpenPosePython.openPosePython(datumToProcess)
 openPosePython = _OpenPosePython.openPosePython
 
+def configure():
+    return _OpenPosePython.configure()
+configure = _OpenPosePython.configure
+
+def stop():
+    return _OpenPosePython.stop()
+stop = _OpenPosePython.stop
+
 def new_datumsPtr():
     return _OpenPosePython.new_datumsPtr()
 new_datumsPtr = _OpenPosePython.new_datumsPtr
