@@ -7,6 +7,9 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{16fe0899-51da-4854-a359-3c25cef4d66c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pyx">
+      <UniqueIdentifier>{977ddf2f-ee1f-497d-b13a-d4dd7270b45d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PythonDemo.py">
@@ -16,7 +19,7 @@
       <Filter>Source Files</Filter>
     </None>
     <None Include="UserClassesCython.pyx">
-      <Filter>Source Files</Filter>
+      <Filter>Pyx</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

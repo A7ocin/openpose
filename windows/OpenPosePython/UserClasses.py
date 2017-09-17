@@ -53,7 +53,7 @@ class UserInputClass:
         for w in range(width):
             for h in range(height):
                 for c in range(channels):
-                    opp.setElement(h, w, c, datumsPtr, int(np_image[h][w][c]))
+                    opp.setElement(h, w, c, datumsPtr, int(np_image[h][w][c]), width, height)
 
     def nextImage(self):
         returnImage = self.mImageFiles[self.mCounter]
@@ -85,3 +85,14 @@ class UserOutputClass:
 def getDatum(datumsPtr):
     return opp.datum_frompointer(opp.datumsPtr_at(datumsPtr)).__getitem__(0)
 
+
+def openPoseInit(FLAGS):
+    
+    # User processing
+    userInputClass = UserInputClass(FLAGS.image_dir)
+    userOutputClass = UserOutputClass()
+
+    opp.configure()
+    print "OpenPose configuration done."
+
+    return userInputClass, userOutputClass

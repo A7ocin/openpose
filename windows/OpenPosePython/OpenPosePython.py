@@ -160,6 +160,458 @@ SwigPyIterator_swigregister = _OpenPosePython.SwigPyIterator_swigregister
 SwigPyIterator_swigregister(SwigPyIterator)
 
 SHARED_PTR_DISOWN = _OpenPosePython.SHARED_PTR_DISOWN
+class IntVector(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, IntVector, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, IntVector, name)
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _OpenPosePython.IntVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _OpenPosePython.IntVector___nonzero__(self)
+
+    def __bool__(self):
+        return _OpenPosePython.IntVector___bool__(self)
+
+    def __len__(self):
+        return _OpenPosePython.IntVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _OpenPosePython.IntVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _OpenPosePython.IntVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _OpenPosePython.IntVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _OpenPosePython.IntVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _OpenPosePython.IntVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _OpenPosePython.IntVector___setitem__(self, *args)
+
+    def pop(self):
+        return _OpenPosePython.IntVector_pop(self)
+
+    def append(self, x):
+        return _OpenPosePython.IntVector_append(self, x)
+
+    def empty(self):
+        return _OpenPosePython.IntVector_empty(self)
+
+    def size(self):
+        return _OpenPosePython.IntVector_size(self)
+
+    def swap(self, v):
+        return _OpenPosePython.IntVector_swap(self, v)
+
+    def begin(self):
+        return _OpenPosePython.IntVector_begin(self)
+
+    def end(self):
+        return _OpenPosePython.IntVector_end(self)
+
+    def rbegin(self):
+        return _OpenPosePython.IntVector_rbegin(self)
+
+    def rend(self):
+        return _OpenPosePython.IntVector_rend(self)
+
+    def clear(self):
+        return _OpenPosePython.IntVector_clear(self)
+
+    def get_allocator(self):
+        return _OpenPosePython.IntVector_get_allocator(self)
+
+    def pop_back(self):
+        return _OpenPosePython.IntVector_pop_back(self)
+
+    def erase(self, *args):
+        return _OpenPosePython.IntVector_erase(self, *args)
+
+    def __init__(self, *args):
+        this = _OpenPosePython.new_IntVector(*args)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+
+    def push_back(self, x):
+        return _OpenPosePython.IntVector_push_back(self, x)
+
+    def front(self):
+        return _OpenPosePython.IntVector_front(self)
+
+    def back(self):
+        return _OpenPosePython.IntVector_back(self)
+
+    def assign(self, n, x):
+        return _OpenPosePython.IntVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _OpenPosePython.IntVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _OpenPosePython.IntVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _OpenPosePython.IntVector_reserve(self, n)
+
+    def capacity(self):
+        return _OpenPosePython.IntVector_capacity(self)
+    __swig_destroy__ = _OpenPosePython.delete_IntVector
+    __del__ = lambda self: None
+IntVector_swigregister = _OpenPosePython.IntVector_swigregister
+IntVector_swigregister(IntVector)
+
+class IntVectorVector(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, IntVectorVector, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, IntVectorVector, name)
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _OpenPosePython.IntVectorVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _OpenPosePython.IntVectorVector___nonzero__(self)
+
+    def __bool__(self):
+        return _OpenPosePython.IntVectorVector___bool__(self)
+
+    def __len__(self):
+        return _OpenPosePython.IntVectorVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _OpenPosePython.IntVectorVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _OpenPosePython.IntVectorVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _OpenPosePython.IntVectorVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _OpenPosePython.IntVectorVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _OpenPosePython.IntVectorVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _OpenPosePython.IntVectorVector___setitem__(self, *args)
+
+    def pop(self):
+        return _OpenPosePython.IntVectorVector_pop(self)
+
+    def append(self, x):
+        return _OpenPosePython.IntVectorVector_append(self, x)
+
+    def empty(self):
+        return _OpenPosePython.IntVectorVector_empty(self)
+
+    def size(self):
+        return _OpenPosePython.IntVectorVector_size(self)
+
+    def swap(self, v):
+        return _OpenPosePython.IntVectorVector_swap(self, v)
+
+    def begin(self):
+        return _OpenPosePython.IntVectorVector_begin(self)
+
+    def end(self):
+        return _OpenPosePython.IntVectorVector_end(self)
+
+    def rbegin(self):
+        return _OpenPosePython.IntVectorVector_rbegin(self)
+
+    def rend(self):
+        return _OpenPosePython.IntVectorVector_rend(self)
+
+    def clear(self):
+        return _OpenPosePython.IntVectorVector_clear(self)
+
+    def get_allocator(self):
+        return _OpenPosePython.IntVectorVector_get_allocator(self)
+
+    def pop_back(self):
+        return _OpenPosePython.IntVectorVector_pop_back(self)
+
+    def erase(self, *args):
+        return _OpenPosePython.IntVectorVector_erase(self, *args)
+
+    def __init__(self, *args):
+        this = _OpenPosePython.new_IntVectorVector(*args)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+
+    def push_back(self, x):
+        return _OpenPosePython.IntVectorVector_push_back(self, x)
+
+    def front(self):
+        return _OpenPosePython.IntVectorVector_front(self)
+
+    def back(self):
+        return _OpenPosePython.IntVectorVector_back(self)
+
+    def assign(self, n, x):
+        return _OpenPosePython.IntVectorVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _OpenPosePython.IntVectorVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _OpenPosePython.IntVectorVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _OpenPosePython.IntVectorVector_reserve(self, n)
+
+    def capacity(self):
+        return _OpenPosePython.IntVectorVector_capacity(self)
+    __swig_destroy__ = _OpenPosePython.delete_IntVectorVector
+    __del__ = lambda self: None
+IntVectorVector_swigregister = _OpenPosePython.IntVectorVector_swigregister
+IntVectorVector_swigregister(IntVectorVector)
+
+class IntVectorVectorVector(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, IntVectorVectorVector, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, IntVectorVectorVector, name)
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _OpenPosePython.IntVectorVectorVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _OpenPosePython.IntVectorVectorVector___nonzero__(self)
+
+    def __bool__(self):
+        return _OpenPosePython.IntVectorVectorVector___bool__(self)
+
+    def __len__(self):
+        return _OpenPosePython.IntVectorVectorVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _OpenPosePython.IntVectorVectorVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _OpenPosePython.IntVectorVectorVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _OpenPosePython.IntVectorVectorVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _OpenPosePython.IntVectorVectorVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _OpenPosePython.IntVectorVectorVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _OpenPosePython.IntVectorVectorVector___setitem__(self, *args)
+
+    def pop(self):
+        return _OpenPosePython.IntVectorVectorVector_pop(self)
+
+    def append(self, x):
+        return _OpenPosePython.IntVectorVectorVector_append(self, x)
+
+    def empty(self):
+        return _OpenPosePython.IntVectorVectorVector_empty(self)
+
+    def size(self):
+        return _OpenPosePython.IntVectorVectorVector_size(self)
+
+    def swap(self, v):
+        return _OpenPosePython.IntVectorVectorVector_swap(self, v)
+
+    def begin(self):
+        return _OpenPosePython.IntVectorVectorVector_begin(self)
+
+    def end(self):
+        return _OpenPosePython.IntVectorVectorVector_end(self)
+
+    def rbegin(self):
+        return _OpenPosePython.IntVectorVectorVector_rbegin(self)
+
+    def rend(self):
+        return _OpenPosePython.IntVectorVectorVector_rend(self)
+
+    def clear(self):
+        return _OpenPosePython.IntVectorVectorVector_clear(self)
+
+    def get_allocator(self):
+        return _OpenPosePython.IntVectorVectorVector_get_allocator(self)
+
+    def pop_back(self):
+        return _OpenPosePython.IntVectorVectorVector_pop_back(self)
+
+    def erase(self, *args):
+        return _OpenPosePython.IntVectorVectorVector_erase(self, *args)
+
+    def __init__(self, *args):
+        this = _OpenPosePython.new_IntVectorVectorVector(*args)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+
+    def push_back(self, x):
+        return _OpenPosePython.IntVectorVectorVector_push_back(self, x)
+
+    def front(self):
+        return _OpenPosePython.IntVectorVectorVector_front(self)
+
+    def back(self):
+        return _OpenPosePython.IntVectorVectorVector_back(self)
+
+    def assign(self, n, x):
+        return _OpenPosePython.IntVectorVectorVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _OpenPosePython.IntVectorVectorVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _OpenPosePython.IntVectorVectorVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _OpenPosePython.IntVectorVectorVector_reserve(self, n)
+
+    def capacity(self):
+        return _OpenPosePython.IntVectorVectorVector_capacity(self)
+    __swig_destroy__ = _OpenPosePython.delete_IntVectorVectorVector
+    __del__ = lambda self: None
+IntVectorVectorVector_swigregister = _OpenPosePython.IntVectorVectorVector_swigregister
+IntVectorVectorVector_swigregister(IntVectorVectorVector)
+
+class NumpyMatrix(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, NumpyMatrix, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, NumpyMatrix, name)
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _OpenPosePython.NumpyMatrix_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _OpenPosePython.NumpyMatrix___nonzero__(self)
+
+    def __bool__(self):
+        return _OpenPosePython.NumpyMatrix___bool__(self)
+
+    def __len__(self):
+        return _OpenPosePython.NumpyMatrix___len__(self)
+
+    def __getslice__(self, i, j):
+        return _OpenPosePython.NumpyMatrix___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _OpenPosePython.NumpyMatrix___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _OpenPosePython.NumpyMatrix___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _OpenPosePython.NumpyMatrix___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _OpenPosePython.NumpyMatrix___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _OpenPosePython.NumpyMatrix___setitem__(self, *args)
+
+    def pop(self):
+        return _OpenPosePython.NumpyMatrix_pop(self)
+
+    def append(self, x):
+        return _OpenPosePython.NumpyMatrix_append(self, x)
+
+    def empty(self):
+        return _OpenPosePython.NumpyMatrix_empty(self)
+
+    def size(self):
+        return _OpenPosePython.NumpyMatrix_size(self)
+
+    def swap(self, v):
+        return _OpenPosePython.NumpyMatrix_swap(self, v)
+
+    def begin(self):
+        return _OpenPosePython.NumpyMatrix_begin(self)
+
+    def end(self):
+        return _OpenPosePython.NumpyMatrix_end(self)
+
+    def rbegin(self):
+        return _OpenPosePython.NumpyMatrix_rbegin(self)
+
+    def rend(self):
+        return _OpenPosePython.NumpyMatrix_rend(self)
+
+    def clear(self):
+        return _OpenPosePython.NumpyMatrix_clear(self)
+
+    def get_allocator(self):
+        return _OpenPosePython.NumpyMatrix_get_allocator(self)
+
+    def pop_back(self):
+        return _OpenPosePython.NumpyMatrix_pop_back(self)
+
+    def erase(self, *args):
+        return _OpenPosePython.NumpyMatrix_erase(self, *args)
+
+    def __init__(self, *args):
+        this = _OpenPosePython.new_NumpyMatrix(*args)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+
+    def push_back(self, x):
+        return _OpenPosePython.NumpyMatrix_push_back(self, x)
+
+    def front(self):
+        return _OpenPosePython.NumpyMatrix_front(self)
+
+    def back(self):
+        return _OpenPosePython.NumpyMatrix_back(self)
+
+    def assign(self, n, x):
+        return _OpenPosePython.NumpyMatrix_assign(self, n, x)
+
+    def resize(self, *args):
+        return _OpenPosePython.NumpyMatrix_resize(self, *args)
+
+    def insert(self, *args):
+        return _OpenPosePython.NumpyMatrix_insert(self, *args)
+
+    def reserve(self, n):
+        return _OpenPosePython.NumpyMatrix_reserve(self, n)
+
+    def capacity(self):
+        return _OpenPosePython.NumpyMatrix_capacity(self)
+    __swig_destroy__ = _OpenPosePython.delete_NumpyMatrix
+    __del__ = lambda self: None
+NumpyMatrix_swigregister = _OpenPosePython.NumpyMatrix_swigregister
+NumpyMatrix_swigregister(NumpyMatrix)
+
 
 def openPosePython(datumToProcess):
     return _OpenPosePython.openPosePython(datumToProcess)
@@ -172,6 +624,10 @@ configure = _OpenPosePython.configure
 def stop():
     return _OpenPosePython.stop()
 stop = _OpenPosePython.stop
+
+def setMat(dptr, matData):
+    return _OpenPosePython.setMat(dptr, matData)
+setMat = _OpenPosePython.setMat
 
 def new_datumsPtr():
     return _OpenPosePython.new_datumsPtr()
@@ -205,8 +661,8 @@ def setCvInputData(dptr, image):
     return _OpenPosePython.setCvInputData(dptr, image)
 setCvInputData = _OpenPosePython.setCvInputData
 
-def setInput(dptr, image):
-    return _OpenPosePython.setInput(dptr, image)
+def setInput(dptr, np_image, resolution):
+    return _OpenPosePython.setInput(dptr, np_image, resolution)
 setInput = _OpenPosePython.setInput
 
 def matToNumpyString(dptr):
@@ -217,8 +673,8 @@ def getElement(w, h, c, dptr):
     return _OpenPosePython.getElement(w, h, c, dptr)
 getElement = _OpenPosePython.getElement
 
-def setElement(h, w, c, dptr, value):
-    return _OpenPosePython.setElement(h, w, c, dptr, value)
+def setElement(h, w, c, dptr, value, width, height):
+    return _OpenPosePython.setElement(h, w, c, dptr, value, width, height)
 setElement = _OpenPosePython.setElement
 
 def initInput(dptr):
@@ -232,6 +688,10 @@ show = _OpenPosePython.show
 def matToArray(mat):
     return _OpenPosePython.matToArray(mat)
 matToArray = _OpenPosePython.matToArray
+
+def test():
+    return _OpenPosePython.test()
+test = _OpenPosePython.test
 class Datum(_object):
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, Datum, name, value)

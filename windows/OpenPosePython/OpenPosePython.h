@@ -11,6 +11,7 @@
 // OpenPose dependencies
 #include <openpose/headers.hpp>
 
+
 //class UserInputClass
 //{
 //public:
@@ -38,6 +39,8 @@ bool openPosePython(std::shared_ptr<std::vector<op::Datum>> datumToProcess);
 void configure();
 void stop();
 
+void setMat(std::shared_ptr<std::vector<op::Datum>> dptr, uchar* matData);
+
 std::shared_ptr<std::vector<op::Datum>> new_datumsPtr();
 
 int get(std::shared_ptr<std::vector<op::Datum>> dptr);
@@ -47,10 +50,12 @@ bool datumsPtr_empty(std::shared_ptr<std::vector<op::Datum>> dptr);
 float* get_pose_keypoints(std::shared_ptr<std::vector<op::Datum>> dptr);
 void emplaceBack(std::shared_ptr<std::vector<op::Datum>> dptr);
 void setCvInputData(std::shared_ptr<std::vector<op::Datum>> dptr, std::string image);
-void setInput(std::shared_ptr<std::vector<op::Datum>> dptr, std::vector<std::vector<float>> image);
+void setInput(std::shared_ptr<std::vector<op::Datum>> dptr, std::vector<std::vector<int>> np_image, std::string resolution);
 std::string matToNumpyString(std::shared_ptr<std::vector<op::Datum>> dptr);
 int getElement(int w, int h, int c, std::shared_ptr<std::vector<op::Datum>> dptr);
-void setElement(int h, int w, int c, std::shared_ptr<std::vector<op::Datum>> dptr, int value);
+void setElement(int h, int w, int c, std::shared_ptr<std::vector<op::Datum>> dptr, int value, int width, int height);
 void initInput(std::shared_ptr<std::vector<op::Datum>> dptr);
 void show(std::string name, std::shared_ptr<std::vector<op::Datum>> dptr);
 std::vector<float> matToArray(cv::Mat mat);
+
+void test();
