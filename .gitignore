@@ -126,6 +126,5 @@ windows/OpenPosePython/*.cxx
 windows/OpenPosePython/*.iobj
 windows/OpenPosePython/*.ipdb
 windows/OpenPosePython/*.pyd
-windows/OpenPosePython/*.pyx
 windows/OpenPosePython/build/
 windows/OpenPosePython/*.dll
