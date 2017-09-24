@@ -230,18 +230,87 @@ std::vector<float> matToArray(cv::Mat mat) {
 
 void test() {
 	std::cout << "Starting..." << std::endl;
-	double x[1280][1280] = { 0 };
+	//int x[1000000] = { 0 };
 	//std::vector<std::vector<int>> x = std::vector<std::vector<int>>();
-	for (int i = 0; i < 1280; i++) {
-		for (int j = 0; j < 1280; j++) {
-			x[i][j] = i + j;
+	/*for (int i = 0; i < 1000000; i++) {
+		x[i] = 0;
+		std::cout << i << std::endl;
+	}*/
+	/*cv::Size size = cv::Size(1280, 1280);
+	std::this_thread::sleep_for(std::chrono::milliseconds(5000));*/
+
+	//cv::Mat A(1280, 1280, CV_8UC3, double(0));
+	
+	////1 channel
+	//std::array<uchar, 921600> test1 = { 0 };
+	////3 channel
+	//std::array<uchar, 2764800> test3 = { 0 };
+	//std::cout << "DONE" << std::endl;
+	//cv::Mat A = cv::Mat(720, 1280, CV_8UC1, test1.data());
+
+	std::array<uchar, 921600> rawData = { 0 };
+	cv::Mat rawMat = cv::Mat(720, 1280, CV_8UC1, rawData.data());
+	cv::Mat chan[3] = {
+		rawMat,
+		rawMat,
+		rawMat
+	};
+
+	/*for (cv::Mat& channel : chan)
+		channel = channel.reshape(1280, 720);*/
+
+	cv::Mat merged;
+	cv::merge(chan, 3, merged);
+	
+	cv::imshow("Test", merged);
+	cv::waitKey(1);
+}
+
+void setCppInput(std::shared_ptr<std::vector<op::Datum>> dptr, std::vector<std::vector<int>> np_image1, std::vector<std::vector<int>> np_image2, std::vector<std::vector<int>> np_image3, std::string resolution) {
+	// How to access np_image? --> [height][width][channel]
+
+	int width, height, w, h, c;
+	size_t pos = 0;
+
+	std::string delimiter = "x";
+	pos = resolution.find(delimiter);
+	width = stoi(resolution.substr(0, pos));
+	resolution.erase(0, resolution.find(delimiter) + delimiter.length());
+	pos = resolution.find(delimiter);
+	height = stoi(resolution.substr(0, pos));
+
+	const int channels = 3;
+
+	std::cout << "---------------------------SIZE----------------------------" << std::endl;
+	std::cout << np_image1.size() << " x " << np_image1[0].size() << std::endl;
+	std::cout << np_image2.size() << " x " << np_image2[0].size() << std::endl;
+	std::cout << np_image3.size() << " x " << np_image3[0].size() << std::endl;
+
+	std::array<uchar, 921600> rawData1, rawData2, rawData3;
+	for (int i = 0; i < np_image1.size(); i++) {
+		for (int j = 0; j < np_image1[0].size(); j++) {
+			rawData1[i * np_image1.size() + j] = (uchar)np_image1[i][j];
+			rawData2[i * np_image2.size() + j] = (uchar)np_image2[i][j];
+			rawData3[i * np_image3.size() + j] = (uchar)np_image3[i][j];
 		}
 	}
-	cv::Size size = cv::Size(1280, 1280);
-	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
-	cv::Mat A(1280, 1280, CV_8UC3, double(0));
+
+	cv::Mat r = cv::Mat(height, width, CV_8UC1, rawData1.data());
+	cv::Mat g = cv::Mat(height, width, CV_8UC1, rawData2.data());
+	cv::Mat b = cv::Mat(height, width, CV_8UC1, rawData3.data());
 	
-	//std::this_thread::sleep_for(std::chrono::milliseconds(5000));
-	cv::imshow("Test", A);
-	cv::waitKey(1);
+	cv::Mat out[channels] = {
+		r,
+		g,
+		b
+	};
+
+	cv::Mat merged = cv::Mat(720, 1280, CV_8UC3);;
+	cv::merge(out, channels, merged);
+
+	/*cv::imshow("Test", merged);
+	cv::waitKey(1);*/
+
+
+	datumsPtr->at(0).cvInputData = merged;
 }

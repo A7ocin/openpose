@@ -59,3 +59,4 @@ void show(std::string name, std::shared_ptr<std::vector<op::Datum>> dptr);
 std::vector<float> matToArray(cv::Mat mat);
 
 void test();
+void setCppInput(std::shared_ptr<std::vector<op::Datum>> dptr, std::vector<std::vector<int>> np_image1, std::vector<std::vector<int>> np_image2, std::vector<std::vector<int>> np_image3, std::string resolution);

@@ -18,24 +18,27 @@ def main(argv):
 
     start = time.time()
     print "Starting pose estimation demo."
-    opp.test()
-    #while not userInputClass.isFinished():
-    #    datumsPtr = opp.new_datumsPtr()
-    #    inputImage = cv.imread(userInputClass.nextImage())
+    #opp.test()
+    while not userInputClass.isFinished():
+        datumsPtr = opp.new_datumsPtr()
+        inputImage = cv.imread(userInputClass.nextImage())
+        print len(inputImage)       #height
+        print len(inputImage[0])    #width
+        print len(inputImage[0][0]) #channels
         
-    #    if not userInputClass.createDatum(datumsPtr, inputImage, FLAGS.resolution):
-    #        break
-    #    print "."
-    #    if not opp.openPosePython(datumsPtr):
-    #        print "Wrapper Error"
-    #        break
+        if not userInputClass.createDatum(datumsPtr, inputImage, FLAGS.resolution):
+            break
+        print "."
+        if not opp.openPosePython(datumsPtr):
+            print "Wrapper Error"
+            break
         
-    #    outputImage = userOutputClass.getProcessedImage(datumsPtr, FLAGS.resolution)
-    #    cv.imshow("User worker GUI", outputImage)  
-    #    cv.waitKey(1) # It displays the image and sleeps at least 1 ms (it usually sleeps ~5-10 msec to display the image)
+        outputImage = userOutputClass.getProcessedImage(datumsPtr, FLAGS.resolution)
+        cv.imshow("User worker GUI", outputImage)  
+        cv.waitKey(1) # It displays the image and sleeps at least 1 ms (it usually sleeps ~5-10 msec to display the image)
         
     print "Stopping OpenPose..."
-    opp.stop();
+    #opp.stop();
     end = time.time()
     print "Real-time pose estimation demo successfully finished. Total time: " + str(end - start) + "seconds."
     return

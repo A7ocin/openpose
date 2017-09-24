@@ -31,9 +31,7 @@ swig.exe -I../../include -c++ -python "%(FullPath)"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OpenPosePython.cpp" />
-    <ClCompile Include="OpenPosePython_wrap.cxx">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="OpenPosePython_wrap.cxx" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3386C432-39BD-4328-B59E-AAD755E8D452}</ProjectGuid>

@@ -692,6 +692,10 @@ matToArray = _OpenPosePython.matToArray
 def test():
     return _OpenPosePython.test()
 test = _OpenPosePython.test
+
+def setCppInput(dptr, np_image1, np_image2, np_image3, resolution):
+    return _OpenPosePython.setCppInput(dptr, np_image1, np_image2, np_image3, resolution)
+setCppInput = _OpenPosePython.setCppInput
 class Datum(_object):
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, Datum, name, value)

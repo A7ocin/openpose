@@ -86,25 +86,33 @@ cdef class UserInputClass:
         cdef int width, height, myWidth, myHeight, w, h, c
         cdef float factor
         cdef Mat mat
+        cdef bint condition
         
         width = int(resolution.split('x')[0])
         height = int(resolution.split('x')[1])
         myWidth = len(np_image[0])
         myHeight = len(np_image)
-        if ((width/myWidth)>(height/myHeight)):
+
+        condition = (float(width)/float(myWidth))>(float(height)/float(myHeight))
+
+        if (condition):
                 factor = float(height)/float(myHeight)
         else:
                 factor = float(width)/float(myWidth)
         np_image_temp = cv.resize(np_image, (int(myWidth*factor), int(myHeight*factor)))
-        np_image= cv.copyMakeBorder(np_image_temp,0,height-len(np_image_temp),0,width-len(np_image_temp[0]),cv.BORDER_CONSTANT,value=[0,0,0])
+        np_image= cv.copyMakeBorder(np_image_temp, 0, abs(height-len(np_image_temp)), 0, abs(width-len(np_image_temp[0])), cv.BORDER_CONSTANT, value=[0,0,0])
         channels = 3
 
         #list_temp = [item for sublist in np_image.tolist() for item in sublist]
         #list = [item for sublist in list_temp for item in sublist]
 
-        list = np_image.flatten().reshape(height,width*3).tolist()
+        #list = np_image.flatten().reshape(height,width,channels).tolist()  # <--- THIS WORKS
+
+        list1 = np_image[:, :, 0].flatten().reshape(1,height*width).tolist()
+        list2 = np_image[:, :, 1].flatten().reshape(1,height*width).tolist()
+        list3 = np_image[:, :, 2].flatten().reshape(1,height*width).tolist()
         
-        opp.setInput(datumsPtr, list, resolution);
+        opp.setCppInput(datumsPtr, list1, list2, list3, resolution);
         #mat = np2Mat3D(np_image)
         
         #myCy = PyAdditionalCython();
