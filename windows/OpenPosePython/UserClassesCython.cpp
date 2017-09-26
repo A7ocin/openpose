@@ -2598,10 +2598,22 @@ static PyObject *__pyx_pf_17UserClassesCython_14UserInputClass_2createDatum(stru
  *             print "Last frame read and added to queue. Closing program after it is processed."
  * 		    # This funtion stops this worker, which will eventually stop the whole thread system once all the frames have been processed
  *             self.mClosed = True             # <<<<<<<<<<<<<<
- *             #return None
+ *             return None
  *         else: # if (!mClosed)
  */
     __pyx_v_self->mClosed = 1;
+
+    /* "UserClassesCython.pyx":66
+ * 		    # This funtion stops this worker, which will eventually stop the whole thread system once all the frames have been processed
+ *             self.mClosed = True
+ *             return None             # <<<<<<<<<<<<<<
+ *         else: # if (!mClosed)
+ * 		    # Create new datum
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __Pyx_INCREF(Py_None);
+    __pyx_r = Py_None;
+    goto __pyx_L0;
 
     /* "UserClassesCython.pyx":62
  *         numberOfImages = len(self.mImageFiles)
@@ -2610,7 +2622,6 @@ static PyObject *__pyx_pf_17UserClassesCython_14UserInputClass_2createDatum(stru
  *             print "Last frame read and added to queue. Closing program after it is processed."
  * 		    # This funtion stops this worker, which will eventually stop the whole thread system once all the frames have been processed
  */
-    goto __pyx_L3;
   }
 
   /* "UserClassesCython.pyx":69
@@ -2694,7 +2705,6 @@ static PyObject *__pyx_pf_17UserClassesCython_14UserInputClass_2createDatum(stru
     __pyx_r = __pyx_v_datumsPtr;
     goto __pyx_L0;
   }
-  __pyx_L3:;
 
   /* "UserClassesCython.pyx":59
  *         os.chdir(cwd)
@@ -2705,8 +2715,6 @@ static PyObject *__pyx_pf_17UserClassesCython_14UserInputClass_2createDatum(stru
  */
 
   /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
-  goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_5);

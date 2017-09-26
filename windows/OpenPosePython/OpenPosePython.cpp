@@ -14,7 +14,7 @@ DEFINE_string(image_dir, "examples/media/", "Process a directory of images. Read
 
 
 // Configure OpenPose
-op::Wrapper<std::vector<op::Datum>> opWrapper{ op::ThreadManagerMode::Asynchronous };
+op::Wrapper<std::vector<op::Datum>>* opWrapper = new op::Wrapper<std::vector<op::Datum>>(op::ThreadManagerMode::Asynchronous);
 std::shared_ptr<std::vector<op::Datum>> datumsPtr;
 
 bool openPosePython(std::shared_ptr<std::vector<op::Datum>> datumToProcess)
@@ -23,10 +23,10 @@ bool openPosePython(std::shared_ptr<std::vector<op::Datum>> datumToProcess)
 
 	if (datumToProcess != nullptr)
 	{
-		auto successfullyEmplaced = opWrapper.waitAndEmplace(datumToProcess);
+		auto successfullyEmplaced = opWrapper->waitAndEmplace(datumToProcess);
 		// Pop frame
 		std::shared_ptr<std::vector<op::Datum>> datumProcessed;
-		if (successfullyEmplaced && opWrapper.waitAndPop(datumProcessed)) {
+		if (successfullyEmplaced && opWrapper->waitAndPop(datumProcessed)) {
 			value = true;
 		}
 		else {
@@ -42,13 +42,14 @@ void configure() {
 	op::WrapperStructPose wrapperStructPose{};
 	wrapperStructPose.renderMode = op::RenderMode::Gpu;
 	// Configure wrapper
-	opWrapper.configure(wrapperStructPose);
+	opWrapper->configure(wrapperStructPose);
 
-	opWrapper.start();
+	opWrapper->start();
 }
 
 void stop() {
-	opWrapper.stop();
+	opWrapper->stop();
+	
 }
 
 std::shared_ptr<std::vector<op::Datum>> new_datumsPtr() {
@@ -98,19 +99,20 @@ void setElement(int h, int w, int c, std::shared_ptr<std::vector<op::Datum>> dpt
 void setInputMat(std::shared_ptr<std::vector<op::Datum>> dptr, std::vector<int> np_image, std::string resolution) {
 	// How to access np_image? --> [height][width][channel]
 
+	int width, height;
 	size_t pos = 0;
 
-	std::string delimiter = "x";
+	char delimiter = 'x';
 	pos = resolution.find(delimiter);
-	int width = stoi(resolution.substr(0, pos));
-	resolution.erase(0, resolution.find(delimiter) + delimiter.length());
+	width = stoi(resolution.substr(0, pos));
+	resolution.erase(0, resolution.find(delimiter) + 1);
 	pos = resolution.find(delimiter);
-	int height = stoi(resolution.substr(0, pos));
+	height = stoi(resolution.substr(0, pos));
 
 	const int channels = 3;
 	const int totalSize = width * height;
 
-	uchar* rawData = new uchar[921600 * 3];
+	uchar* rawData = new uchar[totalSize * channels];
 
 	for (int i = 0; i < np_image.size(); i++) {
 		rawData[i] = (uchar)np_image[i];

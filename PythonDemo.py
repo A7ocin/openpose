@@ -14,11 +14,14 @@ DEFINE_string("image_dir",                "examples/media/",      "Process a dir
 DEFINE_string("resolution",               "1280x720",     "The image resolution (display and output). Use \"-1x-1\" to force the program to use the default images resolution.")
 
 def main(argv):
+    """
+    Create and initialize user input and output classes
+    """
     userInputClass, userOutputClass = UserClasses.openPoseInit(FLAGS)
 
     start = time.time()
     print "Starting pose estimation demo."
-    #opp.test()
+    
     while not userInputClass.isFinished():
         datumsPtr = opp.new_datumsPtr()
         inputImage = cv.imread(userInputClass.nextImage())
@@ -33,11 +36,11 @@ def main(argv):
         
         outputImage = userOutputClass.getProcessedImage(datumsPtr, FLAGS.resolution)
         cv.imshow("User worker GUI", outputImage)  
-        cv.waitKey(1) # It displays the image and sleeps at least 1 ms (it usually sleeps ~5-10 msec to display the image)
+        cv.waitKey(1)
         
     print "Stopping OpenPose..."
-    opp.stop();
     end = time.time()
+    opp.stop()
     print "Real-time pose estimation demo successfully finished. Total time: " + str(end - start) + "seconds."
 
 if __name__ == '__main__':
