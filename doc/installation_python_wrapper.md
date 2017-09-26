@@ -56,13 +56,20 @@ Instructions:
 		
 		
 6. Depending on whether you wanna use Cython:
-    1. If you don't have Cython --> in PythonDemo.py replace `import UserClassesCython as UserClasses` with `import UserClasses`
-    2. If you have Cython, execute setup.py as follows:
+    1. If you don't have Cython
+	```
+	python PythonDemoNoCython.py
+    ```
+	
+    2. If you have Cython, navigate to windows/OpenPosePython/ and execute setup.py as follows:
     ```
 	SET VS90COMNTOOLS=%VS140COMNTOOLS%
+	cd windows/OpenPosePython/
     python setup.py build_ext --inplace
+	cd ../..
+	python PythonDemo.py
     ```
-7. Navigate to the OpenPose root folder and from cmd:
+7. If you just want to call OpenPose from the webcam (faster):
 ```
-python PythonDemo.py
+python PythonDemoBasicCamera.py
 ```
