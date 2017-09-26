@@ -27,7 +27,6 @@ def main(argv):
         inputImage = cv.imread(userInputClass.nextImage())
         
         if not userInputClass.createDatum(datumsPtr, inputImage, FLAGS.resolution):
-            print "Error in creating the datum"
             break
 
         if not opp.openPosePython(datumsPtr):
