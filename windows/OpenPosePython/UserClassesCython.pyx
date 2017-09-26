@@ -106,13 +106,13 @@ cdef class UserInputClass:
         #list_temp = [item for sublist in np_image.tolist() for item in sublist]
         #list = [item for sublist in list_temp for item in sublist]
 
-        #list = np_image.flatten().reshape(height,width,channels).tolist()  # <--- THIS WORKS
+        list = np_image.flatten().reshape(height*width*channels).tolist()  # <--- THIS WORKS
 
-        list1 = np_image[:, :, 0].flatten().reshape(1,height*width).tolist()
-        list2 = np_image[:, :, 1].flatten().reshape(1,height*width).tolist()
-        list3 = np_image[:, :, 2].flatten().reshape(1,height*width).tolist()
+        #list1 = np_image[:, :, 0].flatten().reshape(1,height*width).tolist()
+        #list2 = np_image[:, :, 1].flatten().reshape(1,height*width).tolist()
+        #list3 = np_image[:, :, 2].flatten().reshape(1,height*width).tolist()
         
-        opp.setCppInput(datumsPtr, list1, list2, list3, resolution);
+        opp.setInputMat(datumsPtr, list, resolution);
         #mat = np2Mat3D(np_image)
         
         #myCy = PyAdditionalCython();

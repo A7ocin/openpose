@@ -22,9 +22,6 @@ def main(argv):
     while not userInputClass.isFinished():
         datumsPtr = opp.new_datumsPtr()
         inputImage = cv.imread(userInputClass.nextImage())
-        print len(inputImage)       #height
-        print len(inputImage[0])    #width
-        print len(inputImage[0][0]) #channels
         
         if not userInputClass.createDatum(datumsPtr, inputImage, FLAGS.resolution):
             break
@@ -41,7 +38,6 @@ def main(argv):
     #opp.stop();
     end = time.time()
     print "Real-time pose estimation demo successfully finished. Total time: " + str(end - start) + "seconds."
-    return
 
 if __name__ == '__main__':
     app.run()

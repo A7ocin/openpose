@@ -269,48 +269,100 @@ void test() {
 void setCppInput(std::shared_ptr<std::vector<op::Datum>> dptr, std::vector<std::vector<int>> np_image1, std::vector<std::vector<int>> np_image2, std::vector<std::vector<int>> np_image3, std::string resolution) {
 	// How to access np_image? --> [height][width][channel]
 
-	int width, height, w, h, c;
 	size_t pos = 0;
 
 	std::string delimiter = "x";
 	pos = resolution.find(delimiter);
-	width = stoi(resolution.substr(0, pos));
+	int width = stoi(resolution.substr(0, pos));
 	resolution.erase(0, resolution.find(delimiter) + delimiter.length());
 	pos = resolution.find(delimiter);
-	height = stoi(resolution.substr(0, pos));
+	int height = stoi(resolution.substr(0, pos));
 
 	const int channels = 3;
+	const int totalSize = width * height;
 
 	std::cout << "---------------------------SIZE----------------------------" << std::endl;
 	std::cout << np_image1.size() << " x " << np_image1[0].size() << std::endl;
 	std::cout << np_image2.size() << " x " << np_image2[0].size() << std::endl;
 	std::cout << np_image3.size() << " x " << np_image3[0].size() << std::endl;
 
-	std::array<uchar, 921600> rawData1, rawData2, rawData3;
-	for (int i = 0; i < np_image1.size(); i++) {
+	//std::array<uchar, 921600> rawData1, rawData2, rawData3;
+	uchar* rawData1 = new uchar[921600];
+	uchar* rawData2 = new uchar[921600];
+	uchar* rawData3 = new uchar[921600];
+	//for (int i = 0; i < np_image1.size(); i++) {
 		for (int j = 0; j < np_image1[0].size(); j++) {
-			rawData1[i * np_image1.size() + j] = (uchar)np_image1[i][j];
-			rawData2[i * np_image2.size() + j] = (uchar)np_image2[i][j];
-			rawData3[i * np_image3.size() + j] = (uchar)np_image3[i][j];
+			rawData1[j] = (uchar)np_image1[0][j];
+			rawData2[j] = (uchar)np_image2[0][j];
+			rawData3[j] = (uchar)np_image3[0][j];
+			//rawData2[i * np_image2.size() + j] = (uchar)np_image2[i][j];
+			//rawData3[i * np_image3.size() + j] = (uchar)np_image3[i][j];
 		}
-	}
+	//}
 
-	cv::Mat r = cv::Mat(height, width, CV_8UC1, rawData1.data());
-	cv::Mat g = cv::Mat(height, width, CV_8UC1, rawData2.data());
-	cv::Mat b = cv::Mat(height, width, CV_8UC1, rawData3.data());
-	
-	cv::Mat out[channels] = {
-		r,
-		g,
-		b
-	};
+	uchar* my_array = new uchar[921600 * 3];
+	memcpy(my_array, (rawData1), sizeof(uchar) * 921600);
+	memcpy(my_array + (sizeof(uchar)*921600), (rawData2), sizeof(uchar) * 921600);
+	memcpy(my_array + 2*(sizeof(uchar) * 921600), (rawData3), sizeof(uchar) * 921600);
+	//cv::Mat* out = new cv::Mat(height, width, CV_8UC3, my_array);
 
-	cv::Mat merged = cv::Mat(720, 1280, CV_8UC3);;
-	cv::merge(out, channels, merged);
+	cv::Mat* chan = new cv::Mat[3];
+	chan[0] = cv::Mat(height, width, CV_8UC1, my_array);
+	chan[1] = cv::Mat(height, width, CV_8UC1, my_array + sizeof(uchar) * 921600);
+	chan[2] = cv::Mat(height, width, CV_8UC1, my_array + sizeof(uchar) * 921600 * 2);
 
-	/*cv::imshow("Test", merged);
+	cv::Mat* out = new cv::Mat(height, width, CV_8UC3);
+	cv::merge(chan, 3, *out);
+
+	//cv::Mat r = cv::Mat(height, width, CV_8UC1, rawData1.data());
+	//cv::Mat g = cv::Mat(height, width, CV_8UC1, rawData2.data());
+	////cv::Mat b = cv::Mat(height, width, CV_8UC1, rawData3.data());
+	//
+	//std::vector<cv::Mat> out{ r,g,r };
+
+	//cv::Mat merged;
+	//cv::merge(out, merged);
+
+	/*cv::imshow("Test", r);
 	cv::waitKey(1);*/
 
+			//std::array<uchar, 3*921600> rawData;
+			//for (int i = 0; i < np_image.size(); i++) {
+			//	for (int j = 0; j < np_image[0].size(); j++) {
+			//		for (int k = 0; k < np_image[0][0].size(); k++) {
+			//			//[x + WIDTH * (y + DEPTH * z)]
+			//			rawData[i + np_image.size() *( j + np_image[0].size() * k )] = (uchar)np_image[i][j][k];
+			//		}
+			//	}
+			//}
+			//cv::Mat out = cv::Mat(height, width, CV_8UC3, rawData.data());
+			//cv::imshow("Test", out);
+			//cv::waitKey(1);
+	datumsPtr->at(0).cvInputData = *out;
+}
 
-	datumsPtr->at(0).cvInputData = merged;
+void setInputMat(std::shared_ptr<std::vector<op::Datum>> dptr, std::vector<int> np_image, std::string resolution) {
+	// How to access np_image? --> [height][width][channel]
+
+	size_t pos = 0;
+
+	std::string delimiter = "x";
+	pos = resolution.find(delimiter);
+	int width = stoi(resolution.substr(0, pos));
+	resolution.erase(0, resolution.find(delimiter) + delimiter.length());
+	pos = resolution.find(delimiter);
+	int height = stoi(resolution.substr(0, pos));
+
+	const int channels = 3;
+	const int totalSize = width * height;
+
+	uchar* rawData = new uchar[921600 * 3];
+
+	for (int i = 0; i < np_image.size(); i++) {
+		rawData[i] = (uchar)np_image[i];
+	}
+
+	cv::Mat* out = new cv::Mat(height, width, CV_8UC3, rawData);
+
+	datumsPtr->at(0).cvInputData = *out;
 }
