@@ -22,6 +22,7 @@ swig.exe -I../../include -c++ -python "%(FullPath)"</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\include\openpose\headers.hpp</AdditionalInputs>
     </CustomBuild>
+    <None Include="..\..\PythonDemoNoCython.py" />
     <None Include="UserClasses.py" />
     <None Include="UserClassesCython.pyx" />
   </ItemGroup>

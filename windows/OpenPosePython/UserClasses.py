@@ -28,13 +28,13 @@ class UserInputClass:
         else: # if (!mClosed)
 		    # Create new datum
             opp.emplaceBack(datumsPtr)
-            self.datum = opp.datum_frompointer(opp.datumsPtr_at(datumsPtr)).__getitem__(0)
+            #self.datum = opp.datum_frompointer(opp.datumsPtr_at(datumsPtr)).__getitem__(0)
             # Fill datum
             self.setImage(datumsPtr, "1280x720", image)
-            if not self.datum.cvInputData:
-                print "Empty frame detected on path: " + self.mImageFiles[self.mCounter - 1] + ". Closing program."
-                self.mClosed = True
-                datumsPtr = None
+            #if not self.datum.cvInputData:
+            #    print "Empty frame detected on path: " + self.mImageFiles[self.mCounter - 1] + ". Closing program."
+            #    self.mClosed = True
+            #    datumsPtr = None
                 
             return datumsPtr
 

@@ -7,7 +7,7 @@ import time
 
 sys.path.insert(0, 'windows/OpenPosePython')
 
-import UserClassesCython as UserClasses
+import UserClasses as UserClasses
 import OpenPosePython as opp
 
 DEFINE_string("image_dir",                "examples/media/",      "Process a directory of images. Read all standard formats (jpg, png, bmp, etc.).")

@@ -21,6 +21,9 @@
     <None Include="UserClassesCython.pyx">
       <Filter>Pyx</Filter>
     </None>
+    <None Include="..\..\PythonDemoNoCython.py">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OpenPosePython.h">

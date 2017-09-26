@@ -625,17 +625,9 @@ def stop():
     return _OpenPosePython.stop()
 stop = _OpenPosePython.stop
 
-def setMat(dptr, matData):
-    return _OpenPosePython.setMat(dptr, matData)
-setMat = _OpenPosePython.setMat
-
 def new_datumsPtr():
     return _OpenPosePython.new_datumsPtr()
 new_datumsPtr = _OpenPosePython.new_datumsPtr
-
-def get(dptr):
-    return _OpenPosePython.get(dptr)
-get = _OpenPosePython.get
 
 def datumsPtr_at(dptr):
     return _OpenPosePython.datumsPtr_at(dptr)
@@ -649,25 +641,9 @@ def datumsPtr_empty(dptr):
     return _OpenPosePython.datumsPtr_empty(dptr)
 datumsPtr_empty = _OpenPosePython.datumsPtr_empty
 
-def get_pose_keypoints(dptr):
-    return _OpenPosePython.get_pose_keypoints(dptr)
-get_pose_keypoints = _OpenPosePython.get_pose_keypoints
-
 def emplaceBack(dptr):
     return _OpenPosePython.emplaceBack(dptr)
 emplaceBack = _OpenPosePython.emplaceBack
-
-def setCvInputData(dptr, image):
-    return _OpenPosePython.setCvInputData(dptr, image)
-setCvInputData = _OpenPosePython.setCvInputData
-
-def setInput(dptr, np_image, resolution):
-    return _OpenPosePython.setInput(dptr, np_image, resolution)
-setInput = _OpenPosePython.setInput
-
-def matToNumpyString(dptr):
-    return _OpenPosePython.matToNumpyString(dptr)
-matToNumpyString = _OpenPosePython.matToNumpyString
 
 def getElement(w, h, c, dptr):
     return _OpenPosePython.getElement(w, h, c, dptr)
@@ -676,26 +652,6 @@ getElement = _OpenPosePython.getElement
 def setElement(h, w, c, dptr, value, width, height):
     return _OpenPosePython.setElement(h, w, c, dptr, value, width, height)
 setElement = _OpenPosePython.setElement
-
-def initInput(dptr):
-    return _OpenPosePython.initInput(dptr)
-initInput = _OpenPosePython.initInput
-
-def show(name, dptr):
-    return _OpenPosePython.show(name, dptr)
-show = _OpenPosePython.show
-
-def matToArray(mat):
-    return _OpenPosePython.matToArray(mat)
-matToArray = _OpenPosePython.matToArray
-
-def test():
-    return _OpenPosePython.test()
-test = _OpenPosePython.test
-
-def setCppInput(dptr, np_image1, np_image2, np_image3, resolution):
-    return _OpenPosePython.setCppInput(dptr, np_image1, np_image2, np_image3, resolution)
-setCppInput = _OpenPosePython.setCppInput
 
 def setInputMat(dptr, np_image, resolution):
     return _OpenPosePython.setInputMat(dptr, np_image, resolution)

@@ -70,16 +70,7 @@ cdef class UserInputClass:
             #self.datum = opp.datum_frompointer(opp.datumsPtr_at(datumsPtr)).__getitem__(0)
             # Fill datum
             
-            self.setImage(datumsPtr, resolution, image)
-
-            
-            #opp.setInput(datumsPtr, image.tolist(), resolution)
-
-            #if not self.datum.cvInputData:
-            #    print "Empty frame detected on path: " + self.mImageFiles[self.mCounter - 1] + ". Closing program."
-            #    self.mClosed = True
-            #    datumsPtr = None
-                
+            self.setImage(datumsPtr, resolution, image)                
             return datumsPtr
 
     cdef setImage(UserInputClass self, datumsPtr, str resolution, np.ndarray np_image):
@@ -103,31 +94,8 @@ cdef class UserInputClass:
         np_image= cv.copyMakeBorder(np_image_temp, 0, abs(height-len(np_image_temp)), 0, abs(width-len(np_image_temp[0])), cv.BORDER_CONSTANT, value=[0,0,0])
         channels = 3
 
-        #list_temp = [item for sublist in np_image.tolist() for item in sublist]
-        #list = [item for sublist in list_temp for item in sublist]
-
-        list = np_image.flatten().reshape(height*width*channels).tolist()  # <--- THIS WORKS
-
-        #list1 = np_image[:, :, 0].flatten().reshape(1,height*width).tolist()
-        #list2 = np_image[:, :, 1].flatten().reshape(1,height*width).tolist()
-        #list3 = np_image[:, :, 2].flatten().reshape(1,height*width).tolist()
-        
+        list = np_image.flatten().reshape(height*width*channels).tolist()  # <--- THIS WORKS 
         opp.setInputMat(datumsPtr, list, resolution);
-        #mat = np2Mat3D(np_image)
-        
-        #myCy = PyAdditionalCython();
-
-        ##list4 = np.array([[[1, 2], [2, 3], [3, 4]], [[4, 5], [5, 6], [6, 7]]])
-        #myCy.setElement(np_image)
-        
-        #cy.printNumpy(np_image)
-       
-        #opp.setMat(datumsPtr, <object><void*>mat.data)
-
-        #for h in range(height):              #TODO ----> Move loops to C++
-        #    for w in range(width):
-        #        for c in range(channels):
-        #            opp.setElement(h, w, c, datumsPtr, int(np_image[h][w][c]), width, height)
 
     def nextImage(UserInputClass self):
         returnImage = self.mImageFiles[self.mCounter]
