@@ -105,6 +105,9 @@ cdef class UserInputClass:
     def isFinished(UserInputClass self):
         return self.mClosed
 
+    def setFinished(UserInputClass self):
+        self.mClosed = True
+
 
 cdef class UserOutputClass:
     def init(UserOutputClass self):

@@ -15,6 +15,7 @@ DEFINE_string("resolution",               "1280x720",     "The image resolution 
 
 def main(argv):
     userInputClass, userOutputClass = UserClasses.openPoseInit(FLAGS)
+    numImages = 0
 
     start = time.time()
     print "Starting pose estimation demo."
@@ -32,8 +33,12 @@ def main(argv):
             break
         
         outputImage = userOutputClass.getProcessedImage(datumsPtr, FLAGS.resolution)
+        numImages += 1
+        fps = "FPS: " + str(round((numImages/(time.time()-start)),2))
+        print fps
+        cv.putText(outputImage, fps,(10,60), cv.FONT_HERSHEY_DUPLEX, 2, (0,255,255), 4, cv.LINE_AA)
         cv.imshow("User worker GUI", outputImage)  
-        cv.waitKey(1) # It displays the image and sleeps at least 1 ms (it usually sleeps ~5-10 msec to display the image)
+        cv.waitKey(1)
         
     print "Stopping OpenPose..."
     opp.stop();

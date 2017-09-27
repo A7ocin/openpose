@@ -63,6 +63,9 @@ class UserInputClass:
     def isFinished(self):
         return self.mClosed
 
+    def setFinished(self):
+        self.mClosed = True
+
 
 class UserOutputClass:
     def init(self):
