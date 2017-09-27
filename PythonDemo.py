@@ -19,6 +19,7 @@ def main(argv):
     """
     userInputClass, userOutputClass = UserClasses.openPoseInit(FLAGS)
     numImages = 0
+    startFPS = None
 
     start = time.time()
     print "Starting pose estimation demo."
@@ -29,6 +30,9 @@ def main(argv):
         
         if not userInputClass.createDatum(datumsPtr, inputImage, FLAGS.resolution):
             break
+        else:
+            if not startFPS:
+                startFPS = time.time()
 
         if not opp.openPosePython(datumsPtr):
             print "Wrapper Error"
@@ -36,7 +40,7 @@ def main(argv):
         
         outputImage = userOutputClass.getProcessedImage(datumsPtr, FLAGS.resolution)
         numImages += 1
-        fps = "FPS: " + str(round((numImages/(time.time()-start)),2))
+        fps = "FPS: " + str(round((numImages/(time.time()-startFPS)),2))
         print fps
         cv.putText(outputImage, fps,(10,60), cv.FONT_HERSHEY_DUPLEX, 2, (0,255,255), 4, cv.LINE_AA)
         cv.imshow("User worker GUI", outputImage)  
