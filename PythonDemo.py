@@ -47,8 +47,8 @@ def main(argv):
         cv.waitKey(1)
         
     print "Stopping OpenPose..."
-    end = time.time()
     opp.stop()
+    end = time.time()
     print "Real-time pose estimation demo successfully finished. Total time: " + str(end - start) + "seconds."
 
 if __name__ == '__main__':

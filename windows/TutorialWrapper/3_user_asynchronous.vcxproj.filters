@@ -11,7 +11,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\examples\tutorial_wrapper\1_user_asynchronous.cpp">
+    <ClCompile Include="..\..\examples\tutorial_wrapper\3_user_asynchronous.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
