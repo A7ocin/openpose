@@ -24,9 +24,8 @@ namespace op
         /**
          * This constructor of VideoCaptureReader wraps cv::VideoCapture(const std::string).
          * @param path const std::string indicating the cv::VideoCapture constructor string argument.
-         * @param producerType const std::string indicating whether the frame source is an IP camera or video.
          */
-        explicit VideoCaptureReader(const std::string& path, const ProducerType producerType);
+        VideoCaptureReader(const std::string& path);
 
         /**
          * Destructor of VideoCaptureReader. It releases the cv::VideoCapture member. It is virtual so that

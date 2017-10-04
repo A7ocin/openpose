@@ -11,10 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\examples\tutorial_wrapper\3_user_asynchronous.cpp" />
+    <ClCompile Include="..\..\examples\tutorial_wrapper\1_user_asynchronous.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{6669F592-6798-4F29-853A-A8C42205DE4A}</ProjectGuid>
+    <ProjectGuid>{1A72B535-7E9E-4B48-9D54-B90D6FC52616}</ProjectGuid>
     <RootNamespace>1_user_asynchronous</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>

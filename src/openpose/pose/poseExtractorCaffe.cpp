@@ -26,8 +26,6 @@ namespace op
             const auto resizeScaleCheck = resizeScale / (mNetOutputSize.y/(float)netInputSize.y);
             if (1+1e-6 < resizeScaleCheck || resizeScaleCheck < 1-1e-6)
                 error("Net input and output size must be proportional. resizeScaleCheck = " + std::to_string(resizeScaleCheck), __LINE__, __FUNCTION__, __FILE__);
-            // Layers parameters
-            spBodyPartConnectorCaffe->setPoseModel(mPoseModel);
         }
         catch (const std::exception& e)
         {
@@ -62,6 +60,7 @@ namespace op
 
             // Pose extractor blob and layer
             spPoseBlob = {std::make_shared<caffe::Blob<float>>(1,1,1,1)};
+            spBodyPartConnectorCaffe->setPoseModel(mPoseModel);
             spBodyPartConnectorCaffe->Reshape({spHeatMapsBlob.get(), spPeaksBlob.get()}, {spPoseBlob.get()});
             cudaCheck(__LINE__, __FUNCTION__, __FILE__);
 
@@ -105,10 +104,7 @@ namespace op
             // Get scale net to output
             const auto scaleProducerToNetInput = resizeGetScaleFactor(inputDataSize, mNetOutputSize);
             const Point<int> netSize{intRound(scaleProducerToNetInput*inputDataSize.x), intRound(scaleProducerToNetInput*inputDataSize.y)};
-            if (mOutputSize.x > 0 && mOutputSize.y > 0)
-                mScaleNetToOutput = {(float)resizeGetScaleFactor(netSize, mOutputSize)};
-            else
-                mScaleNetToOutput = {(float)resizeGetScaleFactor(netSize, inputDataSize)};
+            mScaleNetToOutput = {(float)resizeGetScaleFactor(netSize, mOutputSize)};
 
             // 4. Connecting body parts
             spBodyPartConnectorCaffe->setScaleNetToOutput(mScaleNetToOutput);

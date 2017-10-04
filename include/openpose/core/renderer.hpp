@@ -2,6 +2,7 @@
 #define OPENPOSE_CORE_RENDERER_HPP
 
 #include <atomic>
+#include <tuple>
 #include <openpose/core/common.hpp>
 
 namespace op
@@ -9,17 +10,23 @@ namespace op
     class OP_API Renderer
     {
     public:
-        explicit Renderer(const float renderThreshold, const float alphaKeypoint, const float alphaHeatMap,
-                          const bool blendOriginalFrame = true, const unsigned int elementToRender = 0u,
-                          const unsigned int numberElementsToRender = 0u);
+        explicit Renderer(const unsigned long long volume, const float alphaKeypoint, const float alphaHeatMap,
+                          const unsigned int elementToRender = 0u, const unsigned int numberElementsToRender = 0u);
+
+        ~Renderer();
+
+        void initializationOnThread();
 
         void increaseElementToRender(const int increment);
 
         void setElementToRender(const int elementToRender);
 
-        bool getBlendOriginalFrame() const;
+        std::tuple<std::shared_ptr<float*>, std::shared_ptr<bool>, std::shared_ptr<std::atomic<unsigned int>>,
+                   std::shared_ptr<const unsigned int>> getSharedParameters();
 
-        void setBlendOriginalFrame(const bool blendOriginalFrame);
+        void setSharedParametersAndIfLast(const std::tuple<std::shared_ptr<float*>, std::shared_ptr<bool>,
+                                                           std::shared_ptr<std::atomic<unsigned int>>,
+                                                           std::shared_ptr<const unsigned int>>& tuple, const bool isLast);
 
         float getAlphaKeypoint() const;
 
@@ -29,20 +36,22 @@ namespace op
 
         void setAlphaHeatMap(const float alphaHeatMap);
 
-        bool getShowGooglyEyes() const;
-
-        void setShowGooglyEyes(const bool showGooglyEyes);
-
     protected:
-        const float mRenderThreshold;
-        std::atomic<bool> mBlendOriginalFrame;
+        std::shared_ptr<float*> spGpuMemoryPtr;
         std::shared_ptr<std::atomic<unsigned int>> spElementToRender;
         std::shared_ptr<const unsigned int> spNumberElementsToRender;
-        std::atomic<bool> mShowGooglyEyes;
+
+        void cpuToGpuMemoryIfNotCopiedYet(const float* const cpuMemory);
+
+        void gpuToCpuMemoryIfLastRenderer(float* cpuMemory);
 
     private:
+        const unsigned long long mVolume;
         float mAlphaKeypoint;
         float mAlphaHeatMap;
+        bool mIsFirstRenderer;
+        bool mIsLastRenderer;
+        std::shared_ptr<bool> spGpuMemoryAllocated;
 
         DELETE_COPY(Renderer);
     };
