@@ -4,6 +4,7 @@
 // face module
 #include <openpose/face/faceDetector.hpp>
 #include <openpose/face/faceExtractor.hpp>
+#include <openpose/face/faceExtractorCaffe.hpp>
 #include <openpose/face/faceParameters.hpp>
 #include <openpose/face/faceRenderer.hpp>
 #include <openpose/face/renderFace.hpp>

@@ -1,4 +1,4 @@
-#ifndef CPU_ONLY
+#ifdef USE_CUDA
     #include <cuda.h>
     #include <cuda_runtime_api.h>
 #endif
@@ -22,7 +22,7 @@ namespace op
         try
         {
             // Free CUDA pointers - Note that if pointers are 0 (i.e. nullptr), no operation is performed.
-            #ifndef CPU_ONLY
+            #ifdef USE_CUDA
                 cudaFree(pGpuFace);
             #endif
         }
@@ -39,7 +39,7 @@ namespace op
             log("Starting initialization on thread.", Priority::Low, __LINE__, __FUNCTION__, __FILE__);
             Renderer::initializationOnThread();
             // GPU memory allocation for rendering
-            #ifndef CPU_ONLY
+            #ifdef USE_CUDA
                 cudaMalloc((void**)(&pGpuFace), POSE_MAX_PEOPLE * FACE_NUMBER_PARTS * 3 * sizeof(float));
             #endif
             log("Finished initialization on thread.", Priority::Low, __LINE__, __FUNCTION__, __FILE__);
@@ -89,7 +89,7 @@ namespace op
         try
         {
             // GPU rendering
-            #ifndef CPU_ONLY
+            #ifdef USE_CUDA
                 const auto elementRendered = spElementToRender->load(); // I prefer std::round(T&) over intRound(T) for std::atomic
                 const auto numberPeople = faceKeypoints.getSize(0);
                 if (numberPeople > 0 && elementRendered == 0)
@@ -107,11 +107,11 @@ namespace op
                 // GPU memory to CPU if last renderer
                 gpuToCpuMemoryIfLastRenderer(outputData.getPtr());
                 cudaCheck(__LINE__, __FUNCTION__, __FILE__);
-            // CPU_ONLY mode
             #else
-                error("GPU rendering not available if `CPU_ONLY` is set.", __LINE__, __FUNCTION__, __FILE__);
                 UNUSED(outputData);
                 UNUSED(faceKeypoints);
+                error("OpenPose must be compiled with the `USE_CUDA` macro definitions in order to run this"
+                      " functionality.", __LINE__, __FUNCTION__, __FILE__);
             #endif
         }
         catch (const std::exception& e)
