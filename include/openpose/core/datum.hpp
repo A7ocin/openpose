@@ -12,7 +12,7 @@ namespace op
      * std::shared_ptr<std::vector<Datum>>. It contains all the parameters that the different workers and threads need
      * to exchange.
      */
-    struct OP_API Datum
+    struct Datum
     {
         // ---------------------------------------- ID parameters ---------------------------------------- //
         unsigned long long id; /**< Datum ID. Internally used to sort the Datums if multi-threading is used. */

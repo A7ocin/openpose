@@ -14,7 +14,7 @@
     <ClCompile Include="..\..\examples\tutorial_wrapper\3_user_asynchronous.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{6669F592-6798-4F29-853A-A8C42205DE4A}</ProjectGuid>
+    <ProjectGuid>{69F2D5CC-939E-4564-AEA8-161074905757}</ProjectGuid>
     <RootNamespace>1_user_asynchronous</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>

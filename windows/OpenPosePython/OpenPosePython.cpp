@@ -72,7 +72,7 @@ std::vector<uchar> mat_at(std::shared_ptr<std::vector<op::Datum>> dptr) {
 			array.insert(array.end(), mat.ptr(i), mat.ptr(i) + mat.cols);
 		}
 	}
-	cout << mat.size << endl;
+	//cout << mat.size << endl;
 	return array;
 }
 

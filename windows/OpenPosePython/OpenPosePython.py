@@ -702,6 +702,10 @@ class Datum(_object):
     __swig_getmethods__["faceKeypoints"] = _OpenPosePython.Datum_faceKeypoints_get
     if _newclass:
         faceKeypoints = _swig_property(_OpenPosePython.Datum_faceKeypoints_get, _OpenPosePython.Datum_faceKeypoints_set)
+    __swig_setmethods__["faceHeatMaps"] = _OpenPosePython.Datum_faceHeatMaps_set
+    __swig_getmethods__["faceHeatMaps"] = _OpenPosePython.Datum_faceHeatMaps_get
+    if _newclass:
+        faceHeatMaps = _swig_property(_OpenPosePython.Datum_faceHeatMaps_get, _OpenPosePython.Datum_faceHeatMaps_set)
     __swig_setmethods__["handRectangles"] = _OpenPosePython.Datum_handRectangles_set
     __swig_getmethods__["handRectangles"] = _OpenPosePython.Datum_handRectangles_get
     if _newclass:
@@ -710,18 +714,30 @@ class Datum(_object):
     __swig_getmethods__["handKeypoints"] = _OpenPosePython.Datum_handKeypoints_get
     if _newclass:
         handKeypoints = _swig_property(_OpenPosePython.Datum_handKeypoints_get, _OpenPosePython.Datum_handKeypoints_set)
+    __swig_setmethods__["handHeatMaps"] = _OpenPosePython.Datum_handHeatMaps_set
+    __swig_getmethods__["handHeatMaps"] = _OpenPosePython.Datum_handHeatMaps_get
+    if _newclass:
+        handHeatMaps = _swig_property(_OpenPosePython.Datum_handHeatMaps_get, _OpenPosePython.Datum_handHeatMaps_set)
+    __swig_setmethods__["scaleInputToNetInputs"] = _OpenPosePython.Datum_scaleInputToNetInputs_set
+    __swig_getmethods__["scaleInputToNetInputs"] = _OpenPosePython.Datum_scaleInputToNetInputs_get
+    if _newclass:
+        scaleInputToNetInputs = _swig_property(_OpenPosePython.Datum_scaleInputToNetInputs_get, _OpenPosePython.Datum_scaleInputToNetInputs_set)
+    __swig_setmethods__["netInputSizes"] = _OpenPosePython.Datum_netInputSizes_set
+    __swig_getmethods__["netInputSizes"] = _OpenPosePython.Datum_netInputSizes_get
+    if _newclass:
+        netInputSizes = _swig_property(_OpenPosePython.Datum_netInputSizes_get, _OpenPosePython.Datum_netInputSizes_set)
     __swig_setmethods__["scaleInputToOutput"] = _OpenPosePython.Datum_scaleInputToOutput_set
     __swig_getmethods__["scaleInputToOutput"] = _OpenPosePython.Datum_scaleInputToOutput_get
     if _newclass:
         scaleInputToOutput = _swig_property(_OpenPosePython.Datum_scaleInputToOutput_get, _OpenPosePython.Datum_scaleInputToOutput_set)
+    __swig_setmethods__["netOutputSize"] = _OpenPosePython.Datum_netOutputSize_set
+    __swig_getmethods__["netOutputSize"] = _OpenPosePython.Datum_netOutputSize_get
+    if _newclass:
+        netOutputSize = _swig_property(_OpenPosePython.Datum_netOutputSize_get, _OpenPosePython.Datum_netOutputSize_set)
     __swig_setmethods__["scaleNetToOutput"] = _OpenPosePython.Datum_scaleNetToOutput_set
     __swig_getmethods__["scaleNetToOutput"] = _OpenPosePython.Datum_scaleNetToOutput_get
     if _newclass:
         scaleNetToOutput = _swig_property(_OpenPosePython.Datum_scaleNetToOutput_get, _OpenPosePython.Datum_scaleNetToOutput_set)
-    __swig_setmethods__["scaleRatios"] = _OpenPosePython.Datum_scaleRatios_set
-    __swig_getmethods__["scaleRatios"] = _OpenPosePython.Datum_scaleRatios_get
-    if _newclass:
-        scaleRatios = _swig_property(_OpenPosePython.Datum_scaleRatios_get, _OpenPosePython.Datum_scaleRatios_set)
     __swig_setmethods__["elementRendered"] = _OpenPosePython.Datum_elementRendered_set
     __swig_getmethods__["elementRendered"] = _OpenPosePython.Datum_elementRendered_get
     if _newclass:
